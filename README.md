@@ -39,18 +39,21 @@ WhatsApp Direct Pro is a Flutter-based mobile application that allows users to s
 ## ✨ Features
 
 ### Core Features
+
 - 📞 **Direct WhatsApp Messaging** - Send messages to any number instantly
 - 🌍 **Country Code Picker** - Select from 200+ countries with flags
 - 💬 **Message Composition** - Optional message text with validation
 - 📱 **Quick Launch** - Direct WhatsApp integration
 
 ### UI/UX Features
+
 - 🎨 **Dual Theme Support** - Light and dark themes
 - 📐 **Responsive Design** - Adapts to different screen sizes
 - 🎯 **Consistent Typography** - Unified font system across the app
 - 🔄 **Smooth Animations** - Polished user experience
 
 ### Settings & Preferences
+
 - 🌙 **Theme Toggle** - Switch between light/dark modes
 - 📝 **Number History** - Toggle saving of contacted numbers
 - 🌐 **Language Support** - Ready for internationalization
@@ -90,26 +93,30 @@ WhatsApp Direct Pro is a Flutter-based mobile application that allows users to s
 ### Getting Started
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/whats_direct_pro.git
    cd whats_direct_pro
    ```
 
 2. **Install dependencies**
+
    ```bash
    flutter pub get
    ```
 
 3. **Generate launcher icons**
+
    ```bash
    flutter pub run flutter_launcher_icons
    ```
 
 4. **Run the app**
+
    ```bash
    # For development
    flutter run
-   
+
    # For specific platform
    flutter run -d android
    flutter run -d ios
@@ -174,21 +181,25 @@ lib/
 ### Key Components
 
 #### 🎨 Theme System
+
 - **Custom Theme**: Centralized theme management with consistent colors and fonts
 - **Font Sizes**: Predefined font scale for consistency
 - **Color Palette**: Comprehensive light/dark color schemes
 
 #### 🗃️ State Management
+
 - **Provider Pattern**: Used for theme and settings state
 - **SharedPreferences**: Persistent storage for user preferences
 
 #### 🧩 Widgets
+
 - **Country Code Picker**: Custom widget with search functionality
 - **Responsive Design**: Adapts to different screen sizes
 
 ## 📦 Dependencies
 
 ### Core Dependencies
+
 - **`flutter`**: UI framework
 - **`provider`**: State management
 - **`url_launcher`**: WhatsApp integration
@@ -196,6 +207,7 @@ lib/
 - **`cupertino_icons`**: iOS-style icons
 
 ### Development Dependencies
+
 - **`flutter_test`**: Testing framework
 - **`flutter_launcher_icons`**: App icon generation
 
