@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 
 class AppThemes {
+  // Font Sizes
+  static const double fontSizeExtraSmall = 10.0;
+  static const double fontSizeSmall = 12.0;
+  static const double fontSizeMedium = 14.0;
+  static const double fontSizeLarge = 16.0;
+  static const double fontSizeExtraLarge = 18.0;
+  static const double fontSizeTitle = 20.0;
+  static const double fontSizeHeading = 24.0;
+  static const double fontSizeLargeHeading = 28.0;
+  static const double fontSizeDisplay = 32.0;
+
   // Light Theme Colors
   static const Color lightPrimaryText = Color(0xFF808080);
   static const Color lightSecondaryText = Color(0xFFE0E0E0);
@@ -61,12 +72,69 @@ class AppThemes {
     dividerTheme: const DividerThemeData(color: lightDivider, thickness: 1),
     iconTheme: const IconThemeData(color: lightIconColor),
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: lightPrimaryText),
-      bodyMedium: TextStyle(color: lightPrimaryText),
-      bodySmall: TextStyle(color: lightSecondaryText),
-      titleLarge: TextStyle(color: lightPrimaryText),
-      titleMedium: TextStyle(color: lightPrimaryText),
-      titleSmall: TextStyle(color: lightSecondaryText),
+      displayLarge: TextStyle(
+        color: lightPrimaryText,
+        fontSize: fontSizeDisplay,
+        fontWeight: FontWeight.bold,
+      ),
+      displayMedium: TextStyle(
+        color: lightPrimaryText,
+        fontSize: fontSizeLargeHeading,
+        fontWeight: FontWeight.bold,
+      ),
+      displaySmall: TextStyle(
+        color: lightPrimaryText,
+        fontSize: fontSizeHeading,
+        fontWeight: FontWeight.w600,
+      ),
+      headlineLarge: TextStyle(
+        color: lightPrimaryText,
+        fontSize: fontSizeHeading,
+        fontWeight: FontWeight.w600,
+      ),
+      headlineMedium: TextStyle(
+        color: lightPrimaryText,
+        fontSize: fontSizeTitle,
+        fontWeight: FontWeight.w500,
+      ),
+      headlineSmall: TextStyle(
+        color: lightPrimaryText,
+        fontSize: fontSizeExtraLarge,
+        fontWeight: FontWeight.w500,
+      ),
+      titleLarge: TextStyle(
+        color: lightPrimaryText,
+        fontSize: fontSizeTitle,
+        fontWeight: FontWeight.w500,
+      ),
+      titleMedium: TextStyle(
+        color: lightPrimaryText,
+        fontSize: fontSizeExtraLarge,
+        fontWeight: FontWeight.w400,
+      ),
+      titleSmall: TextStyle(
+        color: lightSecondaryText,
+        fontSize: fontSizeLarge,
+        fontWeight: FontWeight.w400,
+      ),
+      bodyLarge: TextStyle(color: lightPrimaryText, fontSize: fontSizeLarge),
+      bodyMedium: TextStyle(color: lightPrimaryText, fontSize: fontSizeMedium),
+      bodySmall: TextStyle(color: lightSecondaryText, fontSize: fontSizeSmall),
+      labelLarge: TextStyle(
+        color: lightPrimaryText,
+        fontSize: fontSizeMedium,
+        fontWeight: FontWeight.w500,
+      ),
+      labelMedium: TextStyle(
+        color: lightPrimaryText,
+        fontSize: fontSizeSmall,
+        fontWeight: FontWeight.w500,
+      ),
+      labelSmall: TextStyle(
+        color: lightSecondaryText,
+        fontSize: fontSizeExtraSmall,
+        fontWeight: FontWeight.w500,
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -120,12 +188,69 @@ class AppThemes {
     dividerTheme: const DividerThemeData(color: darkDivider, thickness: 1),
     iconTheme: const IconThemeData(color: darkIconColor),
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: darkPrimaryText),
-      bodyMedium: TextStyle(color: darkPrimaryText),
-      bodySmall: TextStyle(color: darkSecondaryText),
-      titleLarge: TextStyle(color: darkPrimaryText),
-      titleMedium: TextStyle(color: darkPrimaryText),
-      titleSmall: TextStyle(color: darkSecondaryText),
+      displayLarge: TextStyle(
+        color: darkPrimaryText,
+        fontSize: fontSizeDisplay,
+        fontWeight: FontWeight.bold,
+      ),
+      displayMedium: TextStyle(
+        color: darkPrimaryText,
+        fontSize: fontSizeLargeHeading,
+        fontWeight: FontWeight.bold,
+      ),
+      displaySmall: TextStyle(
+        color: darkPrimaryText,
+        fontSize: fontSizeHeading,
+        fontWeight: FontWeight.w600,
+      ),
+      headlineLarge: TextStyle(
+        color: darkPrimaryText,
+        fontSize: fontSizeHeading,
+        fontWeight: FontWeight.w600,
+      ),
+      headlineMedium: TextStyle(
+        color: darkPrimaryText,
+        fontSize: fontSizeTitle,
+        fontWeight: FontWeight.w500,
+      ),
+      headlineSmall: TextStyle(
+        color: darkPrimaryText,
+        fontSize: fontSizeExtraLarge,
+        fontWeight: FontWeight.w500,
+      ),
+      titleLarge: TextStyle(
+        color: darkPrimaryText,
+        fontSize: fontSizeTitle,
+        fontWeight: FontWeight.w500,
+      ),
+      titleMedium: TextStyle(
+        color: darkPrimaryText,
+        fontSize: fontSizeExtraLarge,
+        fontWeight: FontWeight.w400,
+      ),
+      titleSmall: TextStyle(
+        color: darkSecondaryText,
+        fontSize: fontSizeLarge,
+        fontWeight: FontWeight.w400,
+      ),
+      bodyLarge: TextStyle(color: darkPrimaryText, fontSize: fontSizeLarge),
+      bodyMedium: TextStyle(color: darkPrimaryText, fontSize: fontSizeMedium),
+      bodySmall: TextStyle(color: darkSecondaryText, fontSize: fontSizeSmall),
+      labelLarge: TextStyle(
+        color: darkPrimaryText,
+        fontSize: fontSizeMedium,
+        fontWeight: FontWeight.w500,
+      ),
+      labelMedium: TextStyle(
+        color: darkPrimaryText,
+        fontSize: fontSizeSmall,
+        fontWeight: FontWeight.w500,
+      ),
+      labelSmall: TextStyle(
+        color: darkSecondaryText,
+        fontSize: fontSizeExtraSmall,
+        fontWeight: FontWeight.w500,
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -175,4 +300,12 @@ class AppThemes {
       isDark ? darkHighlight : lightHighlight;
   static Color getDisabledColor(bool isDark) =>
       isDark ? darkDisabled : lightDisabled;
+
+  // Utility methods to access font sizes
+  static double getBodyFontSize() => fontSizeMedium;
+  static double getTitleFontSize() => fontSizeTitle;
+  static double getHeadingFontSize() => fontSizeHeading;
+  static double getSmallFontSize() => fontSizeSmall;
+  static double getLargeFontSize() => fontSizeLarge;
+  static double getDisplayFontSize() => fontSizeDisplay;
 }
