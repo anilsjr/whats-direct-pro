@@ -333,14 +333,10 @@ class _SendScreenState extends State<SendScreen> {
                               'assets/icons/whatsapp_logo.svg',
                               width: 24,
                               height: 24,
-                              colorFilter: const ColorFilter.mode(
-                                AppThemes.lightButtonText,
-                                BlendMode.srcIn,
-                              ),
                             ),
                             const SizedBox(width: 12),
                             Text(
-                              'WhatsApp',
+                              'Send',
                               style: TextStyle(
                                 fontSize: AppThemes.fontSizeLarge,
                                 fontWeight: FontWeight.w600,
