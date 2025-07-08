@@ -78,7 +78,7 @@ class _CountryCodePickerState extends State<CountryCodePicker> {
               child: Center(
                 child: Text(
                   _selectedCountry?.flag ?? '🇮🇳',
-                  style: const TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: AppThemes.fontSizeSmall),
                 ),
               ),
             ),
@@ -86,7 +86,10 @@ class _CountryCodePickerState extends State<CountryCodePicker> {
             // Country Code
             Text(
               _selectedCountry?.code ?? '+91',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: AppThemes.fontSizeLarge,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             if (widget.enabled) ...[
               const SizedBox(width: 4),
@@ -174,9 +177,12 @@ class _CountryPickerBottomSheetState extends State<_CountryPickerBottomSheet> {
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                const Text(
+                Text(
                   'Select Country',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    fontSize: AppThemes.fontSizeExtraLarge,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const Spacer(),
                 IconButton(
@@ -249,14 +255,14 @@ class _CountryPickerBottomSheetState extends State<_CountryPickerBottomSheet> {
                     child: Center(
                       child: Text(
                         country.flag,
-                        style: const TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: AppThemes.fontSizeLarge),
                       ),
                     ),
                   ),
                   title: Text(
                     country.name,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: AppThemes.fontSizeLarge,
                       fontWeight: isSelected
                           ? FontWeight.w600
                           : FontWeight.w400,
@@ -270,7 +276,7 @@ class _CountryPickerBottomSheetState extends State<_CountryPickerBottomSheet> {
                   trailing: Text(
                     country.code,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: AppThemes.fontSizeLarge,
                       fontWeight: FontWeight.w500,
                       color: isSelected
                           ? Theme.of(context).primaryColor

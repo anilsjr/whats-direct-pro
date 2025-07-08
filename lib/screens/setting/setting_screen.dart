@@ -51,9 +51,12 @@ class _SettingScreenState extends State<SettingScreen> {
                   horizontal: 20.0,
                   vertical: 8.0,
                 ),
-                title: const Text(
+                title: Text(
                   'Dark Theme',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: AppThemes.fontSizeLarge,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 trailing: CupertinoSwitch(
                   value: themeProvider.isDarkMode,
@@ -86,9 +89,12 @@ class _SettingScreenState extends State<SettingScreen> {
                   horizontal: 20.0,
                   vertical: 8.0,
                 ),
-                title: const Text(
+                title: Text(
                   'Save Number in History',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: AppThemes.fontSizeLarge,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 trailing: CupertinoSwitch(
                   value: saveNumberProvider.isSaveNumberEnabled,
@@ -121,9 +127,12 @@ class _SettingScreenState extends State<SettingScreen> {
                   horizontal: 20.0,
                   vertical: 8.0,
                 ),
-                title: const Text(
+                title: Text(
                   'Language',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: AppThemes.fontSizeLarge,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -131,7 +140,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     Text(
                       'English',
                       style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: AppThemes.fontSizeLarge,
                         color: AppThemes.getSubtleTextColor(
                           Theme.of(context).brightness == Brightness.dark,
                         ),
@@ -171,14 +180,17 @@ class _SettingScreenState extends State<SettingScreen> {
                   horizontal: 20.0,
                   vertical: 8.0,
                 ),
-                title: const Text(
+                title: Text(
                   'Version',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: AppThemes.fontSizeLarge,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 trailing: Text(
                   '1.0.0',
                   style: TextStyle(
-                    fontSize: 16.0,
+                    fontSize: AppThemes.fontSizeLarge,
                     color: AppThemes.getSubtleTextColor(
                       Theme.of(context).brightness == Brightness.dark,
                     ),
@@ -206,9 +218,12 @@ class _SettingScreenState extends State<SettingScreen> {
                   horizontal: 20.0,
                   vertical: 8.0,
                 ),
-                title: const Text(
+                title: Text(
                   'Share The App',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: AppThemes.fontSizeLarge,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 trailing: Icon(
                   Icons.chevron_right,
@@ -235,7 +250,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: Text(
                   'Remove History',
                   style: TextStyle(
-                    fontSize: 16.0,
+                    fontSize: AppThemes.fontSizeLarge,
                     color: AppThemes.getErrorColor(
                       Theme.of(context).brightness == Brightness.dark,
                     ),

@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import '../../theme/custom_theme.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -12,16 +13,22 @@ class AboutScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'WhatsApp Direct Pro',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: AppThemes.fontSizeHeading,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 16),
-            const Text('Version 1.0.0', style: TextStyle(fontSize: 18)),
+            Text(
+              'Version 1.0.0',
+              style: TextStyle(fontSize: AppThemes.fontSizeExtraLarge),
+            ),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'This app allows you to send messages directly to WhatsApp contacts without saving their numbers.',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: AppThemes.fontSizeLarge),
             ),
           ],
         ),

@@ -137,9 +137,12 @@ class _SendScreenState extends State<SendScreen> {
               const SizedBox(height: 40),
 
               // Phone Number Section
-              const Text(
+              Text(
                 'Phone Number',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  fontSize: AppThemes.fontSizeLarge,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               const SizedBox(height: 12),
 
@@ -226,7 +229,7 @@ class _SendScreenState extends State<SendScreen> {
                     'show country picker',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
-                      fontSize: 14,
+                      fontSize: AppThemes.fontSizeMedium,
                     ),
                   ),
                 ],
@@ -235,9 +238,12 @@ class _SendScreenState extends State<SendScreen> {
               const SizedBox(height: 32),
 
               // Message Section
-              const Text(
+              Text(
                 'Message',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  fontSize: AppThemes.fontSizeLarge,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               const SizedBox(height: 12),
 
@@ -312,10 +318,10 @@ class _SendScreenState extends State<SendScreen> {
                               size: 24,
                             ),
                             const SizedBox(width: 12),
-                            const Text(
+                            Text(
                               'Whatsapp',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: AppThemes.fontSizeLarge,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
