@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:whats_direct_pro/screens/setting/setting_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,20 +21,35 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('WhatsApp Direct Pro'),
           actions: [
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                // Handle the icon press
-                // print("Settings clicked");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SettingScreen();
-                    },
-                  ),
-                );
-              },
+            MenuAnchor(
+              builder: (context, controller, child) => IconButton(
+                icon: const Icon(Icons.more_vert_outlined),
+                onPressed: () {
+                  controller.open();
+                },
+              ),
+              menuChildren: [
+                MenuItemButton(
+                  child: const Text('About'),
+                  onPressed: () {
+                    showAboutDialog(
+                      context: context,
+                      applicationName: 'WhatsApp Direct Pro',
+                      applicationVersion: '1.0.0',
+                    );
+                  },
+                ),
+                MenuItemButton(
+                  child: const Text('Setting'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const SettingScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
           bottom: const TabBar(
