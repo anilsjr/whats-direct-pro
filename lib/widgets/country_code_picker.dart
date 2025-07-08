@@ -58,14 +58,14 @@ class _CountryCodePickerState extends State<CountryCodePicker> {
     return GestureDetector(
       onTap: widget.enabled ? _showCountryPicker : null,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             // Flag
             Container(
               width: 24,
-              height: 16,
+              height: 24,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(2),
                 border: Border.all(
@@ -288,7 +288,7 @@ class _CountryPickerBottomSheetState extends State<_CountryPickerBottomSheet> {
                   selected: isSelected,
                   selectedTileColor: Theme.of(
                     context,
-                  ).primaryColor.withOpacity(0.1),
+                  ).primaryColor.withValues(alpha: 0.1),
                 );
               },
             ),

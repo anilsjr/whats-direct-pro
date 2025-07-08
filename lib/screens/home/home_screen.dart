@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:whats_direct_pro/screens/setting/setting_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
@@ -312,17 +313,22 @@ class _SendScreenState extends State<SendScreen> {
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
-                              Icons.chat,
-                              color: AppThemes.lightButtonText,
-                              size: 24,
+                            SvgPicture.asset(
+                              'assets/icons/whatsapp_logo.svg',
+                              width: 24,
+                              height: 24,
+                              colorFilter: const ColorFilter.mode(
+                                AppThemes.lightButtonText,
+                                BlendMode.srcIn,
+                              ),
                             ),
                             const SizedBox(width: 12),
                             Text(
-                              'Whatsapp',
+                              'WhatsApp',
                               style: TextStyle(
                                 fontSize: AppThemes.fontSizeLarge,
                                 fontWeight: FontWeight.w600,
+                                color: AppThemes.lightButtonText,
                               ),
                             ),
                           ],
