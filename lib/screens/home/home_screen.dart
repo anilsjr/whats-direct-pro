@@ -331,38 +331,6 @@ class _SendScreenState extends State<SendScreen> {
               ),
 
               const Spacer(),
-
-              // Settings Icon at Bottom Right
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: AppThemes.getHighlightColor(
-                      Theme.of(context).brightness == Brightness.dark,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.settings,
-                      color: AppThemes.getSubtleTextColor(
-                        Theme.of(context).brightness == Brightness.dark,
-                      ),
-                      size: 28,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
             ],
           ),
         ),
