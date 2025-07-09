@@ -14,11 +14,7 @@ class AboutScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'assets/icons/whatsapp-logo.png',
-                width: 100,
-                height: 100,
-              ),
+              Image.asset('assets/icons/logo.png', width: 120, height: 120),
               SizedBox(height: 50),
               Text(
                 'WhatsApp Direct Pro',

@@ -225,6 +225,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     'show country picker',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
+
+                      
                       fontSize: AppThemes.fontSizeMedium,
                     ),
                   ),
