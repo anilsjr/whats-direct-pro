@@ -220,14 +220,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             RegExp(r'[^0-9]'),
                             '',
                           );
-                          if (cleanNumber.length < 10 ||
-                              cleanNumber.length > 15) {
-                            return 'Phone number must be between 10 and 15 digits';
-                          }
+
                           // Check if it contains only digits after cleaning
                           if (!RegExp(r'^[0-9]+$').hasMatch(cleanNumber)) {
                             return 'Phone number can only contain digits';
                           }
+
+                          if (cleanNumber.length < 10 ||
+                              cleanNumber.length > 15) {
+                            return 'Phone number must be between of 10 digits';
+                          }
+
                           return null;
                         },
                       ),
@@ -313,49 +316,52 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 40),
 
               // WhatsApp Button
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _submitForm,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: AppThemes.lightButtonText,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _submitForm,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: AppThemes.lightButtonText,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
                     ),
-                    elevation: 0,
-                  ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              AppThemes.lightButtonText,
-                            ),
-                          ),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/whatsapp_logo.svg',
-                              width: 24,
-                              height: 24,
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                              'Send',
-                              style: TextStyle(
-                                fontSize: AppThemes.fontSizeLarge,
-                                fontWeight: FontWeight.w600,
-                                color: AppThemes.lightButtonText,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                AppThemes.lightButtonText,
                               ),
                             ),
-                          ],
-                        ),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/whatsapp_logo.svg',
+                                width: 24,
+                                height: 24,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Send',
+                                style: TextStyle(
+                                  fontSize: AppThemes.fontSizeLarge,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppThemes.lightButtonText,
+                                ),
+                              ),
+                            ],
+                          ),
+                  ),
                 ),
               ),
 
