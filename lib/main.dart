@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'provider/theme_provider.dart';
 // import 'provider/save_number_provider.dart';
@@ -7,6 +8,13 @@ import 'screens/splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Set portrait orientation only
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   // Initialize shared preferences
   final themeProvider = ThemeProvider();
   await themeProvider.loadThemeFromPrefs();

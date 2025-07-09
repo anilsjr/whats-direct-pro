@@ -77,8 +77,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WhatsApp Direct Pro'),
-        centerTitle: true,
+        title: const Text(
+          'WhatsApp Direct Pro',
+          style: TextStyle(
+            // fontSize: AppThemes.fontSizeHeading,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        // centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
         actions: [
