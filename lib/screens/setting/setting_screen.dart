@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../provider/theme_provider.dart';
-import '../../provider/save_number_provider.dart';
 import '../../theme/custom_theme.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -16,7 +17,6 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final saveNumberProvider = Provider.of<SaveNumberProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -90,22 +90,30 @@ class _SettingScreenState extends State<SettingScreen> {
                   vertical: 8.0,
                 ),
                 title: Text(
-                  'Save Number in History',
+                  'Follw ME',
                   style: TextStyle(
                     fontSize: AppThemes.fontSizeLarge,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                trailing: CupertinoSwitch(
-                  value: saveNumberProvider.isSaveNumberEnabled,
-                  onChanged: (value) {
-                    saveNumberProvider.toggleSaveNumber();
-                  },
+                trailing: Icon(
+                  Icons.chevron_right,
+                  color: AppThemes.getSubtleTextColor(
+                    Theme.of(context).brightness == Brightness.dark,
+                  ),
                 ),
-                // onTap: () {
-                //   saveNumberProvider.toggleSaveNumber();
-                // },
+                onTap: () async {
+                  const url = 'https://www.linkedin.com/in/anilvk';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Could not open LinkedIn.')),
+                    );
+                  }
+                },
               ),
+              // Add this import at the top of the file
             ),
 
             // Language Setting
@@ -194,67 +202,6 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: AppThemes.getSubtleTextColor(
                       Theme.of(context).brightness == Brightness.dark,
                     ),
-                  ),
-                ),
-              ),
-            ),
-
-            // Share The App
-            Container(
-              margin: const EdgeInsets.only(bottom: 20.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppThemes.lightShadow,
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 8.0,
-                ),
-                title: Text(
-                  'Share The App',
-                  style: TextStyle(
-                    fontSize: AppThemes.fontSizeLarge,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                trailing: Icon(
-                  Icons.chevron_right,
-                  color: AppThemes.getSubtleTextColor(
-                    Theme.of(context).brightness == Brightness.dark,
-                  ),
-                ),
-                onTap: () {
-                  // Add share app logic here
-                },
-              ),
-            ),
-
-            const Spacer(),
-
-            // Remove History Button
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.only(bottom: 20.0),
-              child: TextButton(
-                onPressed: () {
-                  // Add remove history logic here
-                },
-                child: Text(
-                  'Remove History',
-                  style: TextStyle(
-                    fontSize: AppThemes.fontSizeLarge,
-                    color: AppThemes.getErrorColor(
-                      Theme.of(context).brightness == Brightness.dark,
-                    ),
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),

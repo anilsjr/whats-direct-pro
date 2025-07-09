@@ -1,82 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:whats_direct_pro/screens/setting/setting_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:provider/provider.dart';
-import 'package:whats_direct_pro/provider/save_number_provider.dart';
 import 'package:whats_direct_pro/widgets/country_code_picker.dart';
 import 'package:whats_direct_pro/models/country.dart';
 import '../../theme/custom_theme.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 0, // Ensure we start on the Send tab
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('WhatsApp Direct Pro'),
-          actions: [
-            MenuAnchor(
-              builder: (context, controller, child) => IconButton(
-                icon: const Icon(Icons.more_vert_outlined),
-                onPressed: () {
-                  controller.open();
-                },
-              ),
-              menuChildren: [
-                MenuItemButton(
-                  child: const Text('About'),
-                  onPressed: () {
-                    showAboutDialog(
-                      context: context,
-                      applicationName: 'WhatsApp Direct Pro',
-                      applicationVersion: '1.0.0',
-                    );
-                  },
-                ),
-                MenuItemButton(
-                  child: const Text('Setting'),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SettingScreen(),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
-          bottom: const TabBar(
-            tabs: <Widget>[
-              Tab(text: "Send"),
-              Tab(text: "Quick Message"),
-            ],
-          ),
-        ),
-        body: const TabBarView(
-          children: <Widget>[
-            SendScreen(),
-            Center(child: Text("quick message here")),
-          ],
-        ),
-      ),
-    );
-  }
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class SendScreen extends StatefulWidget {
-  const SendScreen({super.key});
-
-  @override
-  State<SendScreen> createState() => _SendScreenState();
-}
-
-class _SendScreenState extends State<SendScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _showCountryPicker = true;
@@ -110,12 +46,6 @@ class _SendScreenState extends State<SendScreen> {
 
       try {
         await openWhatsApp(number, message);
-
-        // Optionally, save the number using a provider
-        Provider.of<SaveNumberProvider>(
-          context,
-          listen: false,
-        ).saveNumber(number);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -143,6 +73,12 @@ class _SendScreenState extends State<SendScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('WhatsApp Direct Pro'),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Form(
@@ -150,7 +86,7 @@ class _SendScreenState extends State<SendScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 50),
 
               // Phone Number Section
               Text(
