@@ -6,6 +6,7 @@ import 'package:whats_direct_pro/screens/setting/setting_screen.dart'
     show SettingScreen;
 import 'package:whats_direct_pro/widgets/country_code_picker.dart';
 import 'package:whats_direct_pro/models/country.dart';
+import '../../services/overlay_service.dart';
 import '../../theme/custom_theme.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,10 +21,38 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = false;
   bool _showCountryPicker = true;
   String _selectedCountryCode = '+91';
+  bool _hasOverlayPermission = false;
 
   //controllers
   final _numberController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkOverlayPermission();
+  }
+
+  Future<void> _checkOverlayPermission() async {
+    final hasPermission = await OverlayService.requestPermission();
+    setState(() {
+      _hasOverlayPermission = hasPermission;
+    });
+  }
+
+  void _simulateIncomingCall() {
+    OverlayService.showOverlay(
+      title: "Incoming Call",
+      message: "Unknown number is calling...",
+    );
+  }
+
+  void _simulateCallEnded() {
+    OverlayService.showOverlay(
+      title: "Call Ended",
+      message: "Call duration: 0:00",
+    );
+  }
 
   Future<void> openWhatsApp(String phone, String message) async {
     phone = "$_selectedCountryCode$phone"; // Use selected country code
@@ -92,6 +121,49 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.more_vert),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemBuilder: (context) => [
+              if (_hasOverlayPermission) ...[
+                PopupMenuItem(
+                  value: 'incoming_call',
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: 16.0,
+                    ),
+                    child: Text('Simulate Incoming Call'),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'call_ended',
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: 16.0,
+                    ),
+                    child: Text('Simulate Call Ended'),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'close_overlay',
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: 16.0,
+                    ),
+                    child: Text('Close Overlay'),
+                  ),
+                ),
+              ] else ...[
+                PopupMenuItem(
+                  value: 'request_permission',
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: 16.0,
+                    ),
+                    child: Text('Request Overlay Permission'),
+                  ),
+                ),
+              ],
               PopupMenuItem(
                 value: 'about',
                 child: Padding(
@@ -114,16 +186,32 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
             onSelected: (value) {
-              if (value == 'about') {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AboutScreen()),
-                );
-              } else if (value == 'settings') {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const SettingScreen(),
-                  ),
-                );
+              switch (value) {
+                case 'incoming_call':
+                  _simulateIncomingCall();
+                  break;
+                case 'call_ended':
+                  _simulateCallEnded();
+                  break;
+                case 'close_overlay':
+                  OverlayService.closeOverlay();
+                  break;
+                case 'request_permission':
+                  _checkOverlayPermission();
+                  break;
+                case 'about':
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AboutScreen(),
+                    ),
+                  );
+                  break;
+                case 'settings':
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const SettingScreen(),
+                    ),
+                  );
               }
             },
           ),

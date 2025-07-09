@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_overlay_window/flutter_overlay_window.dart';
 import 'package:provider/provider.dart';
 import 'provider/theme_provider.dart';
-// import 'provider/save_number_provider.dart';
+import 'services/overlay_service.dart';
 import 'theme/custom_theme.dart';
 import 'screens/splash/splash_screen.dart';
+import 'overlay/true_caller_overlay.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,8 +20,9 @@ void main() async {
   // Initialize shared preferences
   final themeProvider = ThemeProvider();
   await themeProvider.loadThemeFromPrefs();
-  // final saveNumberProvider = SaveNumberProvider();
-  // await saveNumberProvider.loadSavedNumberFromPrefs();
+
+  // Request overlay permission
+  await OverlayService.requestPermission();
 
   runApp(
     ChangeNotifierProvider<ThemeProvider>(
