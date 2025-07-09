@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:whats_direct_pro/screens/about/about_screen.dart';
+import 'package:whats_direct_pro/screens/setting/setting_screen.dart'
+    show SettingScreen;
 import 'package:whats_direct_pro/widgets/country_code_picker.dart';
 import 'package:whats_direct_pro/models/country.dart';
 import '../../theme/custom_theme.dart';
@@ -78,6 +81,47 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'about',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 16.0,
+                  ),
+                  child: Text('About'),
+                ),
+              ),
+              PopupMenuItem(
+                value: 'settings',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 16.0,
+                  ),
+                  child: Text('Settings'),
+                ),
+              ),
+            ],
+            onSelected: (value) {
+              if (value == 'about') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const AboutScreen()),
+                );
+              } else if (value == 'settings') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SettingScreen(),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),

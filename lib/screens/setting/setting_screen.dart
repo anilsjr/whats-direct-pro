@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../provider/theme_provider.dart';
 import '../../theme/custom_theme.dart';
 
@@ -103,12 +102,31 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                 ),
                 onTap: () async {
-                  const url = 'https://www.linkedin.com/in/anilvk';
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                  final linkedinAppUrl = Uri.parse('linkedin://in/anilvk');
+                  final linkedinWebUrl = Uri.parse(
+                    'https://www.linkedin.com/in/anilvk',
+                  );
+                  if (await canLaunchUrl(linkedinAppUrl)) {
+                    final launched = await launchUrl(linkedinAppUrl);
+                    if (!launched) {
+                      // Fallback to website if app did not open
+                      if (await canLaunchUrl(linkedinWebUrl)) {
+                        await launchUrl(linkedinWebUrl);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Could not open LinkedIn website.'),
+                          ),
+                        );
+                      }
+                    }
+                  } else if (await canLaunchUrl(linkedinWebUrl)) {
+                    await launchUrl(linkedinWebUrl);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Could not open LinkedIn.')),
+                      const SnackBar(
+                        content: Text('Could not open LinkedIn website.'),
+                      ),
                     );
                   }
                 },
