@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:whats_direct_pro/theme/custom_theme.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -15,10 +17,10 @@ class AboutScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset('assets/icons/logo.png', width: 120, height: 120),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Text(
                 'WhatsApp Direct Pro',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: AppThemes.fontSizeHeading,
                   fontWeight: FontWeight.bold,
                 ),
@@ -26,33 +28,35 @@ class AboutScreen extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 'Version 1.0.0',
-                style: TextStyle(fontSize: AppThemes.fontSizeLarge),
+                style: const TextStyle(fontSize: AppThemes.fontSizeLarge),
               ),
               const SizedBox(height: 20),
               Text(
                 'Send WhatsApp messages without saving contacts. Simple, fast, and private.',
-                style: TextStyle(fontSize: AppThemes.fontSizeMedium),
+                style: const TextStyle(fontSize: AppThemes.fontSizeMedium),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 30),
               RichText(
                 text: TextSpan(
-                  style: TextStyle(
-                    color: AppThemes.primaryTextColor,
+                  style: const TextStyle(
+                    color: AppThemes.lightPrimaryText,
                     fontSize: AppThemes.fontSizeMedium,
                   ),
                   children: [
                     const TextSpan(text: 'Developed by '),
                     TextSpan(
                       text: 'Anil Vishwakarma',
-                      style: TextStyle(
-                        color: AppThemes.primaryColor,
+                      style: const TextStyle(
+                        color: AppThemes.lightAccentGreen,
                         fontWeight: FontWeight.bold,
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           // Handle tap on developer name
-                          launchUrl(Uri.parse('https://anilvishwakarma.dev'));
+                          launchUrl(
+                            Uri.parse('https://anilsjr.github.io/portfolio'),
+                          );
                         },
                     ),
                   ],
