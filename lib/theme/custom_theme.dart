@@ -13,46 +13,62 @@ class AppThemes {
   static const double fontSizeDisplay = 32.0;
 
   // Light Theme Colors
-  static const Color lightPrimaryText = Color(0xFF808080);
-  static const Color lightSecondaryText = Color(0xFFE0E0E0);
-  static const Color lightAccentGreen = Color(0xFF71E57E);
-  static const Color lightBackground = Colors.white;
+  static const Color lightPrimaryText = Color(
+    0xFF222222,
+  ); // much darker for contrast
+  static const Color lightSecondaryText = Color(0xFF555555); // darker secondary
+  static const Color lightAccentGreen = Color(0xFF1DB954); // more vibrant green
+  static const Color lightBackground = Color(0xFFFFFFFF); // pure white
 
   // Additional Light Theme Colors
-  static const Color lightCardBackground = Color(0xFFF5F5F5);
-  static const Color lightDivider = Color(0xFFE0E0E0);
-  static const Color lightError = Color(0xFFE53E3E);
-  static const Color lightSuccess = Color(0xFF38A169);
-  static const Color lightWarning = Color(0xFFD69E2E);
-  static const Color lightInfo = Color(0xFF3182CE);
-  static const Color lightSubtleText = Color(0xFF9CA3AF);
-  static const Color lightBorder = Color(0xFFD1D5DB);
-  static const Color lightShadow = Color(0x1A000000);
-  static const Color lightIconColor = Color(0xFF6B7280);
-  static const Color lightButtonText = Colors.white;
-  static const Color lightDisabled = Color(0xFFE5E7EB);
-  static const Color lightHighlight = Color(0xFFF3F4F6);
+  static const Color lightCardBackground = Color(0xFFF0F0F0); // slightly darker
+  static const Color lightDivider = Color(0xFFBDBDBD); // more visible divider
+  static const Color lightError = Color(0xFFD32F2F); // deeper red
+  static const Color lightSuccess = Color(0xFF388E3C); // deeper green
+  static const Color lightWarning = Color(0xFFF9A825); // more vibrant yellow
+  static const Color lightInfo = Color(0xFF1976D2); // deeper blue
+  static const Color lightSubtleText = Color(
+    0xFF616161,
+  ); // more visible subtle text
+  static const Color lightBorder = Color(0xFF9E9E9E); // darker border
+  static const Color lightShadow = Color(0x33000000); // more visible shadow
+  static const Color lightIconColor = Color(0xFF222222); // darker icons
+  static const Color lightButtonText = Color(
+    0xFFFAFAFA,
+  ); // off-white for contrast
+  static const Color lightDisabled = Color(0xFFBDBDBD); // more visible disabled
+  static const Color lightHighlight = Color(
+    0xFFE0E0E0,
+  ); // more visible highlight
 
   // Dark Theme Colors
   static const Color darkPrimaryText = Color(0xFFFFFFFF);
-  static const Color darkSecondaryText = Color(0xFFE0E0E0);
-  static const Color darkAccentGreen = Color(0xFF71E57E);
-  static const Color darkBackground = Color(0xFF1E1E1E);
+  static const Color darkSecondaryText = Color(
+    0xFFB0B0B0,
+  ); // lighter for contrast
+  static const Color darkAccentGreen = Color(0xFF1DB954); // match light accent
+  static const Color darkBackground = Color(
+    0xFF111217,
+  ); // even darker background
 
   // Additional Dark Theme Colors
-  static const Color darkCardBackground = Color(0xFF2D2D2D);
-  static const Color darkDivider = Color(0xFF3F3F3F);
-  static const Color darkError = Color(0xFFFC8181);
-  static const Color darkSuccess = Color(0xFF68D391);
-  static const Color darkWarning = Color(0xFFF6E05E);
-  static const Color darkInfo = Color(0xFF63B3ED);
-  static const Color darkSubtleText = Color(0xFFD1D5DB);
-  static const Color darkBorder = Color(0xFF4A5568);
-  static const Color darkShadow = Color(0x33000000);
-  static const Color darkIconColor = Color(0xFFE5E7EB);
-  static const Color darkButtonText = Color(0xFF1A202C);
-  static const Color darkDisabled = Color(0xFF4A5568);
-  static const Color darkHighlight = Color(0xFF2D3748);
+  static const Color darkCardBackground = Color(0xFF181A20); // more contrast
+  static const Color darkDivider = Color(0xFF44474F); // more visible divider
+  static const Color darkError = Color(0xFFEF5350); // more vibrant error
+  static const Color darkSuccess = Color(0xFF43A047); // more vibrant success
+  static const Color darkWarning = Color(0xFFFFB300); // more vibrant warning
+  static const Color darkInfo = Color(0xFF42A5F5); // more vibrant info
+  static const Color darkSubtleText = Color(0xFFB0B0B0); // lighter subtle text
+  static const Color darkBorder = Color(0xFF616161); // lighter border
+  static const Color darkShadow = Color(0x66000000); // more visible shadow
+  static const Color darkIconColor = Color(0xFFF5F5F5); // lighter icons
+  static const Color darkButtonText = Color(
+    0xFF111217,
+  ); // match background for contrast
+  static const Color darkDisabled = Color(0xFF44474F); // more visible disabled
+  static const Color darkHighlight = Color(
+    0xFF23262E,
+  ); // more visible highlight
 
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
