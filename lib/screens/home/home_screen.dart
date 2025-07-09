@@ -187,6 +187,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 12,
@@ -226,7 +228,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
 
-                      
                       fontSize: AppThemes.fontSizeMedium,
                     ),
                   ),
@@ -269,6 +270,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
                     contentPadding: EdgeInsets.all(16),
                   ),
                   validator: (value) {

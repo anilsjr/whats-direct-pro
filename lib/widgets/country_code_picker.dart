@@ -66,15 +66,15 @@ class _CountryCodePickerState extends State<CountryCodePicker> {
             Container(
               width: 24,
               height: 24,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2),
-                border: Border.all(
-                  color: AppThemes.getBorderColor(
-                    Theme.of(context).brightness == Brightness.dark,
-                  ),
-                  width: 0.5,
-                ),
-              ),
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(2),
+              //   border: Border.all(
+              //     color: AppThemes.getBorderColor(
+              //       Theme.of(context).brightness == Brightness.dark,
+              //     ),
+              //     width: 0.5,
+              //   ),
+              // ),
               child: Center(
                 child: Text(
                   _selectedCountry?.flag ?? '🇮🇳',
