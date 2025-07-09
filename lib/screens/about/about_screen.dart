@@ -34,6 +34,30 @@ class AboutScreen extends StatelessWidget {
                 style: TextStyle(fontSize: AppThemes.fontSizeMedium),
                 textAlign: TextAlign.center,
               ),
+              const SizedBox(height: 30),
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    color: AppThemes.primaryTextColor,
+                    fontSize: AppThemes.fontSizeMedium,
+                  ),
+                  children: [
+                    const TextSpan(text: 'Developed by '),
+                    TextSpan(
+                      text: 'Anil Vishwakarma',
+                      style: TextStyle(
+                        color: AppThemes.primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          // Handle tap on developer name
+                          launchUrl(Uri.parse('https://anilvishwakarma.dev'));
+                        },
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

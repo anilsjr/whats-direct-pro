@@ -6,7 +6,6 @@ import 'package:whats_direct_pro/screens/setting/setting_screen.dart'
     show SettingScreen;
 import 'package:whats_direct_pro/widgets/country_code_picker.dart';
 import 'package:whats_direct_pro/models/country.dart';
-import '../../services/overlay_service.dart';
 import '../../theme/custom_theme.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,28 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _checkOverlayPermission();
-  }
-
-  Future<void> _checkOverlayPermission() async {
-    final hasPermission = await OverlayService.requestPermission();
-    setState(() {
-      _hasOverlayPermission = hasPermission;
-    });
-  }
-
-  void _simulateIncomingCall() {
-    OverlayService.showOverlay(
-      title: "Incoming Call",
-      message: "Unknown number is calling...",
-    );
-  }
-
-  void _simulateCallEnded() {
-    OverlayService.showOverlay(
-      title: "Call Ended",
-      message: "Call duration: 0:00",
-    );
   }
 
   Future<void> openWhatsApp(String phone, String message) async {
@@ -121,49 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.more_vert),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemBuilder: (context) => [
-              if (_hasOverlayPermission) ...[
-                PopupMenuItem(
-                  value: 'incoming_call',
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 16.0,
-                    ),
-                    child: Text('Simulate Incoming Call'),
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 'call_ended',
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 16.0,
-                    ),
-                    child: Text('Simulate Call Ended'),
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 'close_overlay',
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 16.0,
-                    ),
-                    child: Text('Close Overlay'),
-                  ),
-                ),
-              ] else ...[
-                PopupMenuItem(
-                  value: 'request_permission',
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 16.0,
-                    ),
-                    child: Text('Request Overlay Permission'),
-                  ),
-                ),
-              ],
               PopupMenuItem(
                 value: 'about',
                 child: Padding(
@@ -187,18 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
             onSelected: (value) {
               switch (value) {
-                case 'incoming_call':
-                  _simulateIncomingCall();
-                  break;
-                case 'call_ended':
-                  _simulateCallEnded();
-                  break;
-                case 'close_overlay':
-                  OverlayService.closeOverlay();
-                  break;
-                case 'request_permission':
-                  _checkOverlayPermission();
-                  break;
                 case 'about':
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -273,6 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: TextFormField(
                         controller: _numberController,
                         keyboardType: TextInputType.phone,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: InputDecoration(
                           hintText: 'Enter Phone Number',
                           hintStyle: TextStyle(
@@ -289,11 +212,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value.length < 10 ||
-                              value.length > 15) {
-                            return 'Please enter a Valid phone number';
+                          if (value == null || value.isEmpty) {
+                            return 'Phone number is required';
+                          }
+                          // Remove any non-digit characters
+                          final cleanNumber = value.replaceAll(
+                            RegExp(r'[^0-9]'),
+                            '',
+                          );
+                          if (cleanNumber.length < 10 ||
+                              cleanNumber.length > 15) {
+                            return 'Phone number must be between 10 and 15 digits';
+                          }
+                          // Check if it contains only digits after cleaning
+                          if (!RegExp(r'^[0-9]+$').hasMatch(cleanNumber)) {
+                            return 'Phone number can only contain digits';
                           }
                           return null;
                         },
