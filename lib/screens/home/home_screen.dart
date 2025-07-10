@@ -225,12 +225,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (!RegExp(r'^[0-9]+$').hasMatch(cleanNumber)) {
                             return 'Phone number can only contain digits';
                           }
-
-                          if (cleanNumber.length < 10 ||
-                              cleanNumber.length > 15) {
-                            return 'Phone number must be between of 10 digits';
-                          }
-
                           return null;
                         },
                       ),
