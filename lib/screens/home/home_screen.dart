@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:whats_direct_pro/ads_units/banner_ad.dart' show BannerAdWidget;
 import 'package:whats_direct_pro/screens/about/about_screen.dart';
 import 'package:whats_direct_pro/screens/setting/setting_screen.dart'
     show SettingScreen;
@@ -20,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = false;
   bool _showCountryPicker = true;
   String _selectedCountryCode = '+91';
-  bool _hasOverlayPermission = false;
 
   //controllers
   final _numberController = TextEditingController();
@@ -358,8 +358,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 15),
+              // const Spacer(),
 
-              const Spacer(),
+              // Footer Section
+              // const SizedBox(height: 30),
+              // buildBy(context),
+              BannerAdWidget(), // Add ad at the bottom
             ],
           ),
         ),

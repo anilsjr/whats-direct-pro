@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:whats_direct_pro/widgets/author.dart';
 import '../../provider/theme_provider.dart';
 import '../../theme/custom_theme.dart';
 
@@ -224,6 +225,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
               ),
             ),
+            Spacer(),
+            buildBy(context),
           ],
         ),
       ),

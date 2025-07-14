@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'provider/theme_provider.dart';
+import 'provider/term_conditions_provider.dart';
 import 'theme/custom_theme.dart';
 import 'screens/splash/splash_screen.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize();
 
   // Set portrait orientation only
   await SystemChrome.setPreferredOrientations([
@@ -18,10 +21,17 @@ void main() async {
   final themeProvider = ThemeProvider();
   await themeProvider.loadThemeFromPrefs();
 
+  final termsProvider = TermsConditionsProvider();
+  await termsProvider.loadFirstVisitFromPrefs();
 
   runApp(
-    ChangeNotifierProvider<ThemeProvider>(
-      create: (_) => themeProvider,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeProvider>(create: (_) => themeProvider),
+        ChangeNotifierProvider<TermsConditionsProvider>(
+          create: (_) => termsProvider,
+        ),
+      ],
       child: const MyApp(),
     ),
   );
@@ -33,6 +43,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       // title: 'WhatsApp Direct Pro',
       theme: themeProvider.isDarkMode

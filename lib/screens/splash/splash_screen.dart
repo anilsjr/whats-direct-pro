@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
+import 'package:provider/provider.dart';
+import '../../provider/term_conditions_provider.dart';
+import '../../widgets/term_and_conditions.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,15 +15,36 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // You can add any initialization logic here if needed
-    // For example, you might want to navigate to another screen after a delay
-    Future.delayed(Duration(milliseconds: 1000), () {
+    // Call async method without await
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    // Wait for splash duration
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    // Load preferences first
+    final termsProvider = Provider.of<TermsConditionsProvider>(
+      context,
+      listen: false,
+    );
+    await termsProvider.loadFirstVisitFromPrefs();
+
+    if (!mounted) return;
+
+    if (termsProvider.isFirstVisit) {
+      // Navigate to terms screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => HomeScreen()),
+        MaterialPageRoute(builder: (_) => const TermsAndConditionsWidget()),
       );
-      // Navigate to home screen
-    });
+    } else {
+      // Navigate directly to home screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    }
   }
 
   @override
@@ -35,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
         color: Theme.of(context).scaffoldBackgroundColor,
         child: const Center(
           child: Image(
-            image: AssetImage('assets/images/splash_logo.png'),
+            image: AssetImage('assets/icons/logo.png'),
             fit: BoxFit.contain,
           ),
         ),

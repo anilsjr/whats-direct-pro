@@ -1,7 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:whats_direct_pro/theme/custom_theme.dart';
+import 'package:whats_direct_pro/widgets/author.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -37,31 +36,7 @@ class AboutScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 30),
-              RichText(
-                text: TextSpan(
-                  style: const TextStyle(
-                    color: AppThemes.lightPrimaryText,
-                    fontSize: AppThemes.fontSizeMedium,
-                  ),
-                  children: [
-                    const TextSpan(text: 'Developed by '),
-                    TextSpan(
-                      text: 'Anil Vishwakarma',
-                      style: const TextStyle(
-                        color: AppThemes.lightAccentGreen,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // Handle tap on developer name
-                          launchUrl(
-                            Uri.parse('https://anilsjr.github.io/portfolio'),
-                          );
-                        },
-                    ),
-                  ],
-                ),
-              ),
+              buildBy(context),
             ],
           ),
         ),
