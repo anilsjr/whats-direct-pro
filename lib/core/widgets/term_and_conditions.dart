@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../provider/term_conditions_provider.dart';
-import '../screens/home/home_screen.dart';
-import '../theme/custom_theme.dart';
+import 'package:whats_direct_pro/src/provider/term_conditions_provider.dart';
+import 'package:whats_direct_pro/src/screens/home/home_screen.dart';
 
 class TermsAndConditionsWidget extends StatelessWidget {
   final VoidCallback? onContinue;
@@ -17,37 +16,39 @@ class TermsAndConditionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final primaryColor = Theme.of(context).primaryColor;
     
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Terms & Conditions',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          color: isDark ? Colors.grey[900] : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 30,
+              offset: const Offset(0, 10),
+              spreadRadius: 0,
+            ),
+          ],
         ),
-        backgroundColor: primaryColor,
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 24),
             // Header with Icon
             Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: primaryColor.withOpacity(0.1),
+                    color: const Color(0xFFE91E63).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.verified_user_outlined,
-                    color: primaryColor,
+                    color: Color(0xFFE91E63),
                     size: 28,
                   ),
                 ),
@@ -56,11 +57,9 @@ class TermsAndConditionsWidget extends StatelessWidget {
                   child: Text(
                     'Terms & Conditions',
                     style: TextStyle(
-                      fontSize: AppThemes.fontSizeLargeHeading,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
-                      color: isDark 
-                          ? AppThemes.darkPrimaryText 
-                          : AppThemes.lightPrimaryText,
+                      color: isDark ? Colors.white : Colors.black87,
                       letterSpacing: 0.3,
                     ),
                   ),
@@ -72,10 +71,8 @@ class TermsAndConditionsWidget extends StatelessWidget {
             RichText(
               text: TextSpan(
                 style: TextStyle(
-                  fontSize: AppThemes.fontSizeLarge,
-                  color: isDark 
-                      ? AppThemes.darkSecondaryText 
-                      : AppThemes.lightSecondaryText,
+                  fontSize: 16,
+                  color: isDark ? Colors.grey[300] : Colors.black87,
                   height: 1.7,
                   letterSpacing: 0.2,
                 ),
@@ -84,7 +81,7 @@ class TermsAndConditionsWidget extends StatelessWidget {
                   TextSpan(
                     text: 'personal use',
                     style: TextStyle(
-                      color: primaryColor,
+                      color: const Color(0xFFE91E63),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -92,7 +89,7 @@ class TermsAndConditionsWidget extends StatelessWidget {
                   TextSpan(
                     text: 'Continue',
                     style: TextStyle(
-                      color: primaryColor,
+                      color: const Color(0xFFE91E63),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -100,7 +97,7 @@ class TermsAndConditionsWidget extends StatelessWidget {
                   TextSpan(
                     text: 'terms & privacy policy',
                     style: TextStyle(
-                      color: primaryColor,
+                      color: const Color(0xFFE91E63),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -111,7 +108,7 @@ class TermsAndConditionsWidget extends StatelessWidget {
             const SizedBox(height: 32),
             // Divider
             Divider(
-              color: AppThemes.getBorderColor(isDark),
+              color: isDark ? Colors.grey[700] : Colors.grey[300],
               thickness: 1,
               height: 1,
             ),
@@ -138,45 +135,35 @@ class TermsAndConditionsWidget extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Error: ${e.toString()}'),
-                          backgroundColor: AppThemes.getErrorColor(isDark),
+                          backgroundColor: Colors.red,
                         ),
                       );
                     }
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  foregroundColor: isDark 
-                      ? AppThemes.darkButtonText 
-                      : AppThemes.lightButtonText,
+                  backgroundColor: const Color(0xFFE91E63),
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  elevation: 0,
+                  elevation: 2,
+                  shadowColor: const Color(0xFFE91E63).withOpacity(0.3),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Text(
                       'Continue',
                       style: TextStyle(
-                        fontSize: AppThemes.fontSizeLarge,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 0.5,
-                        color: isDark 
-                            ? AppThemes.darkButtonText 
-                            : AppThemes.lightButtonText,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    Icon(
-                      Icons.arrow_forward, 
-                      size: 20,
-                      color: isDark 
-                          ? AppThemes.darkButtonText 
-                          : AppThemes.lightButtonText,
-                    ),
+                    SizedBox(width: 8),
+                    Icon(Icons.arrow_forward, size: 20),
                   ],
                 ),
               ),
@@ -190,9 +177,9 @@ class TermsAndConditionsWidget extends StatelessWidget {
                     onTermsPressed ??
                     () => _showTermsAndPrivacyPolicy(context),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: primaryColor,
+                  foregroundColor: const Color(0xFFE91E63),
                   side: BorderSide(
-                    color: primaryColor.withOpacity(0.5),
+                    color: const Color(0xFFE91E63).withOpacity(0.5),
                     width: 1.5,
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -202,20 +189,15 @@ class TermsAndConditionsWidget extends StatelessWidget {
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.description_outlined, 
-                      size: 18,
-                      color: primaryColor,
-                    ),
-                    const SizedBox(width: 8),
+                  children: const [
+                    Icon(Icons.description_outlined, size: 18),
+                    SizedBox(width: 8),
                     Text(
                       'Terms & Privacy Policy',
                       style: TextStyle(
-                        fontSize: AppThemes.fontSizeMedium,
+                        fontSize: 15,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 0.3,
-                        color: primaryColor,
                       ),
                     ),
                   ],
@@ -236,7 +218,6 @@ class TermsAndConditionsWidget extends StatelessWidget {
 
   static void _showTermsAndPrivacyPolicy(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final primaryColor = Theme.of(context).primaryColor;
     
     showDialog(
       context: context,
@@ -251,9 +232,7 @@ class TermsAndConditionsWidget extends StatelessWidget {
           child: Container(
             constraints: const BoxConstraints(maxWidth: 500, maxHeight: 600),
             decoration: BoxDecoration(
-              color: isDark 
-                  ? AppThemes.darkCardBackground 
-                  : AppThemes.lightCardBackground,
+              color: isDark ? Colors.grey[900] : Colors.white,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
@@ -270,7 +249,7 @@ class TermsAndConditionsWidget extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
                   decoration: BoxDecoration(
-                    color: primaryColor.withOpacity(0.1),
+                    color: const Color(0xFFE91E63).withOpacity(0.1),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
@@ -281,14 +260,12 @@ class TermsAndConditionsWidget extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: primaryColor,
+                          color: const Color(0xFFE91E63),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.description_outlined,
-                          color: isDark 
-                              ? AppThemes.darkButtonText 
-                              : AppThemes.lightButtonText,
+                          color: Colors.white,
                           size: 24,
                         ),
                       ),
@@ -297,11 +274,9 @@ class TermsAndConditionsWidget extends StatelessWidget {
                         child: Text(
                           'Terms & Privacy Policy',
                           style: TextStyle(
-                            fontSize: AppThemes.fontSizeHeading,
+                            fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: isDark 
-                                ? AppThemes.darkPrimaryText 
-                                : AppThemes.lightPrimaryText,
+                            color: isDark ? Colors.white : Colors.black87,
                             letterSpacing: 0.5,
                           ),
                         ),
@@ -309,7 +284,7 @@ class TermsAndConditionsWidget extends StatelessWidget {
                       IconButton(
                         icon: Icon(
                           Icons.close,
-                          color: AppThemes.getSubtleTextColor(isDark),
+                          color: isDark ? Colors.grey[400] : Colors.grey[600],
                         ),
                         onPressed: () => Navigator.of(context).pop(),
                         padding: EdgeInsets.zero,
@@ -356,7 +331,9 @@ class TermsAndConditionsWidget extends StatelessWidget {
                         const SizedBox(height: 24),
                         // Divider
                         Divider(
-                          color: AppThemes.getBorderColor(isDark),
+                          color: isDark
+                              ? Colors.grey[700]
+                              : Colors.grey[300],
                           thickness: 1,
                           height: 1,
                         ),
@@ -397,7 +374,9 @@ class TermsAndConditionsWidget extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: AppThemes.getHighlightColor(isDark),
+                    color: isDark
+                        ? Colors.grey[850]
+                        : Colors.grey[50],
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(20),
                       bottomRight: Radius.circular(20),
@@ -408,25 +387,20 @@ class TermsAndConditionsWidget extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        foregroundColor: isDark 
-                            ? AppThemes.darkButtonText 
-                            : AppThemes.lightButtonText,
+                        backgroundColor: const Color(0xFFE91E63),
+                        foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        elevation: 0,
+                        elevation: 2,
                       ),
-                      child: Text(
+                      child: const Text(
                         'Close',
                         style: TextStyle(
-                          fontSize: AppThemes.fontSizeLarge,
+                          fontSize: 16,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 0.5,
-                          color: isDark 
-                              ? AppThemes.darkButtonText 
-                              : AppThemes.lightButtonText,
                         ),
                       ),
                     ),
@@ -446,18 +420,17 @@ class TermsAndConditionsWidget extends StatelessWidget {
     IconData icon,
     bool isDark,
   ) {
-    final primaryColor = Theme.of(context).primaryColor;
     return Row(
       children: [
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: primaryColor.withOpacity(0.1),
+            color: const Color(0xFFE91E63).withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            color: primaryColor,
+            color: const Color(0xFFE91E63),
             size: 20,
           ),
         ),
@@ -465,11 +438,9 @@ class TermsAndConditionsWidget extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: AppThemes.fontSizeExtraLarge,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: isDark 
-                ? AppThemes.darkPrimaryText 
-                : AppThemes.lightPrimaryText,
+            color: isDark ? Colors.white : Colors.black87,
             letterSpacing: 0.3,
           ),
         ),
@@ -478,7 +449,6 @@ class TermsAndConditionsWidget extends StatelessWidget {
   }
 
   static Widget _buildListItem(BuildContext context, String text, bool isDark) {
-    final primaryColor = Theme.of(context).primaryColor;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -489,7 +459,7 @@ class TermsAndConditionsWidget extends StatelessWidget {
             width: 6,
             height: 6,
             decoration: BoxDecoration(
-              color: primaryColor,
+              color: const Color(0xFFE91E63),
               shape: BoxShape.circle,
             ),
           ),
@@ -497,11 +467,9 @@ class TermsAndConditionsWidget extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                fontSize: AppThemes.fontSizeMedium,
+                fontSize: 15,
                 height: 1.6,
-                color: isDark 
-                    ? AppThemes.darkSecondaryText 
-                    : AppThemes.lightSecondaryText,
+                color: isDark ? Colors.grey[300] : Colors.black87,
                 fontWeight: FontWeight.w400,
               ),
             ),
