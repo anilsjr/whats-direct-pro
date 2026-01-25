@@ -243,15 +243,7 @@ class _CountryPickerBottomSheetState extends State<_CountryPickerBottomSheet> {
                   leading: Container(
                     width: 32,
                     height: 24,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                        color: AppThemes.getBorderColor(
-                          Theme.of(context).brightness == Brightness.dark,
-                        ),
-                        width: 0.5,
-                      ),
-                    ),
+                    
                     child: Center(
                       child: Text(
                         country.flag,

@@ -5,8 +5,11 @@ import 'package:whats_direct_pro/ads_units/banner_ad.dart' show BannerAdWidget;
 import 'package:whats_direct_pro/screens/about/about_screen.dart';
 import 'package:whats_direct_pro/screens/setting/setting_screen.dart'
     show SettingScreen;
+import 'package:whats_direct_pro/screens/recents/recents_screen.dart';
 import 'package:whats_direct_pro/widgets/country_code_picker.dart';
 import 'package:whats_direct_pro/models/country.dart';
+import 'package:whats_direct_pro/services/phone_storage_service.dart';
+import 'package:whats_direct_pro/services/country_preference_service.dart';
 import '../../theme/custom_theme.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = false;
   bool _showCountryPicker = true;
   String _selectedCountryCode = '+91';
+  Country _selectedCountry = Countries.getCountryByCode('+91');
 
   //controllers
   final _numberController = TextEditingController();
@@ -29,6 +33,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _loadPreferences();
+  }
+
+  Future<void> _loadPreferences() async {
+    // Load saved country code
+    final savedCountryCode = await CountryPreferenceService.getCountryCode();
+    // Load saved show country picker preference
+    final savedShowCountryPicker = await CountryPreferenceService.getShowCountryPicker();
+    
+    setState(() {
+      _selectedCountryCode = savedCountryCode;
+      _selectedCountry = Countries.getCountryByCode(savedCountryCode);
+      _showCountryPicker = savedShowCountryPicker;
+    });
   }
 
   Future<void> openWhatsApp(String phone, String message) async {
@@ -54,6 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
       final String message = _messageController.text.trim();
 
       try {
+        // Save phone number to recent list
+        await PhoneStorageService.savePhoneNumber(number, _selectedCountryCode);
+        
         await openWhatsApp(number, message);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -99,6 +120,22 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemBuilder: (context) => [
               PopupMenuItem(
+                value: 'recents',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 16.0,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.history, size: 20),
+                      SizedBox(width: 8),
+                      Text('Recents'),
+                    ],
+                  ),
+                ),
+              ),
+              PopupMenuItem(
                 value: 'about',
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -121,6 +158,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
             onSelected: (value) {
               switch (value) {
+                case 'recents':
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const RecentsScreen(),
+                    ),
+                  );
+                  break;
                 case 'about':
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -134,6 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder: (context) => const SettingScreen(),
                     ),
                   );
+                  break;
               }
             },
           ),
@@ -176,7 +221,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       onCountrySelected: (Country country) {
                         setState(() {
                           _selectedCountryCode = country.code;
+                          _selectedCountry = country;
+                          // Clear the phone number when country changes
+                          _numberController.clear();
                         });
+                        // Save the selected country preference
+                        CountryPreferenceService.saveCountryCode(country.code);
                       },
                       enabled: _showCountryPicker,
                     ),
@@ -195,9 +245,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: TextFormField(
                         controller: _numberController,
                         keyboardType: TextInputType.phone,
+                        maxLength: _selectedCountry.phoneNumberLength,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: InputDecoration(
-                          hintText: 'Enter Phone Number',
+                          hintText: 'Enter ${_selectedCountry.phoneNumberLength} digits',
                           hintStyle: TextStyle(
                             color: AppThemes.getSubtleTextColor(
                               Theme.of(context).brightness == Brightness.dark,
@@ -210,6 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             horizontal: 16,
                             vertical: 12,
                           ),
+                          counterText: '', // Hide the character counter
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -224,6 +276,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           // Check if it contains only digits after cleaning
                           if (!RegExp(r'^[0-9]+$').hasMatch(cleanNumber)) {
                             return 'Phone number can only contain digits';
+                          }
+
+                          // Check if the length matches the country's phone number length
+                          if (cleanNumber.length != _selectedCountry.phoneNumberLength) {
+                            return 'Phone number must be ${_selectedCountry.phoneNumberLength} digits';
                           }
                           return null;
                         },
@@ -241,9 +298,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   Checkbox(
                     value: _showCountryPicker,
                     onChanged: (value) {
+                      final newValue = value ?? false;
                       setState(() {
-                        _showCountryPicker = value ?? false;
+                        _showCountryPicker = newValue;
                       });
+                      // Save the show country picker preference
+                      CountryPreferenceService.saveShowCountryPicker(newValue);
                     },
                     activeColor: Theme.of(context).primaryColor,
                   ),

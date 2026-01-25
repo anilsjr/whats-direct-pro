@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:whats_direct_pro/widgets/author.dart';
 import '../../provider/theme_provider.dart';
 import '../../theme/custom_theme.dart';
@@ -71,6 +71,124 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
 
             // Save Number in History Setting
+            // Container(
+            //   margin: const EdgeInsets.only(bottom: 12.0),
+            //   decoration: BoxDecoration(
+            //     color: Theme.of(context).cardColor,
+            //     borderRadius: BorderRadius.circular(12.0),
+            //     boxShadow: [
+            //       BoxShadow(
+            //         color: AppThemes.lightShadow,
+            //         blurRadius: 4,
+            //         offset: const Offset(0, 2),
+            //       ),
+            //     ],
+            //   ),
+            //   child: ListTile(
+            //     contentPadding: const EdgeInsets.symmetric(
+            //       horizontal: 20.0,
+            //       vertical: 8.0,
+            //     ),
+            //     title: Text(
+            //       'Follw ME',
+            //       style: TextStyle(
+            //         fontSize: AppThemes.fontSizeLarge,
+            //         fontWeight: FontWeight.w500,
+            //       ),
+            //     ),
+            //     trailing: Icon(
+            //       Icons.chevron_right,
+            //       color: AppThemes.getSubtleTextColor(
+            //         Theme.of(context).brightness == Brightness.dark,
+            //       ),
+            //     ),
+            //     onTap: () async {
+            //       final linkedinAppUrl = Uri.parse('linkedin://in/anilvk');
+            //       final linkedinWebUrl = Uri.parse(
+            //         'https://www.linkedin.com/in/anilvk',
+            //       );
+            //       if (await canLaunchUrl(linkedinAppUrl)) {
+            //         final launched = await launchUrl(linkedinAppUrl);
+            //         if (!launched) {
+            //           // Fallback to website if app did not open
+            //           if (await canLaunchUrl(linkedinWebUrl)) {
+            //             await launchUrl(linkedinWebUrl);
+            //           } else {
+            //             ScaffoldMessenger.of(context).showSnackBar(
+            //               const SnackBar(
+            //                 content: Text('Could not open LinkedIn website.'),
+            //               ),
+            //             );
+            //           }
+            //         }
+            //       } else if (await canLaunchUrl(linkedinWebUrl)) {
+            //         await launchUrl(linkedinWebUrl);
+            //       } else {
+            //         ScaffoldMessenger.of(context).showSnackBar(
+            //           const SnackBar(
+            //             content: Text('Could not open LinkedIn website.'),
+            //           ),
+            //         );
+            //       }
+            //     },
+            //   ),
+            //   // Add this import at the top of the file
+            // ),
+
+            // Language Setting
+            // Container(
+            //   margin: const EdgeInsets.only(bottom: 12.0),
+            //   decoration: BoxDecoration(
+            //     color: Theme.of(context).cardColor,
+            //     borderRadius: BorderRadius.circular(12.0),
+            //     boxShadow: [
+            //       BoxShadow(
+            //         color: AppThemes.lightShadow,
+            //         blurRadius: 4,
+            //         offset: const Offset(0, 2),
+            //       ),
+            //     ],
+            //   ),
+            //   child: ListTile(
+            //     contentPadding: const EdgeInsets.symmetric(
+            //       horizontal: 20.0,
+            //       vertical: 8.0,
+            //     ),
+            //     title: Text(
+            //       'Language',
+            //       style: TextStyle(
+            //         fontSize: AppThemes.fontSizeLarge,
+            //         fontWeight: FontWeight.w500,
+            //       ),
+            //     ),
+            //     trailing: Row(
+            //       mainAxisSize: MainAxisSize.min,
+            //       children: [
+            //         Text(
+            //           'English',
+            //           style: TextStyle(
+            //             fontSize: AppThemes.fontSizeLarge,
+            //             color: AppThemes.getSubtleTextColor(
+            //               Theme.of(context).brightness == Brightness.dark,
+            //             ),
+            //           ),
+            //         ),
+            //         const SizedBox(width: 8.0),
+            //         Icon(
+            //           Icons.chevron_right,
+            //           color: AppThemes.getSubtleTextColor(
+            //             Theme.of(context).brightness == Brightness.dark,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //     // onTap: () {
+            //     //   // Add language selection logic here
+            //     // },
+            //   ),
+            // ),
+
+            // Share App Setting
             Container(
               margin: const EdgeInsets.only(bottom: 12.0),
               decoration: BoxDecoration(
@@ -90,101 +208,39 @@ class _SettingScreenState extends State<SettingScreen> {
                   vertical: 8.0,
                 ),
                 title: Text(
-                  'Follw ME',
+                  'Share App',
                   style: TextStyle(
                     fontSize: AppThemes.fontSizeLarge,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 trailing: Icon(
-                  Icons.chevron_right,
+                  Icons.share,
                   color: AppThemes.getSubtleTextColor(
                     Theme.of(context).brightness == Brightness.dark,
                   ),
                 ),
                 onTap: () async {
-                  final linkedinAppUrl = Uri.parse('linkedin://in/anilvk');
-                  final linkedinWebUrl = Uri.parse(
-                    'https://www.linkedin.com/in/anilvk',
-                  );
-                  if (await canLaunchUrl(linkedinAppUrl)) {
-                    final launched = await launchUrl(linkedinAppUrl);
-                    if (!launched) {
-                      // Fallback to website if app did not open
-                      if (await canLaunchUrl(linkedinWebUrl)) {
-                        await launchUrl(linkedinWebUrl);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Could not open LinkedIn website.'),
-                          ),
-                        );
-                      }
-                    }
-                  } else if (await canLaunchUrl(linkedinWebUrl)) {
-                    await launchUrl(linkedinWebUrl);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Could not open LinkedIn website.'),
-                      ),
+                  const shareText =
+                      'Check out WhatsApp Direct Pro - A convenient way to send WhatsApp messages directly!';
+                  try {
+                    await Share.share(
+                      shareText,
+                      subject: 'WhatsApp Direct Pro',
                     );
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error sharing app: $e'),
+                          backgroundColor: AppThemes.getErrorColor(
+                            Theme.of(context).brightness == Brightness.dark,
+                          ),
+                        ),
+                      );
+                    }
                   }
                 },
-              ),
-              // Add this import at the top of the file
-            ),
-
-            // Language Setting
-            Container(
-              margin: const EdgeInsets.only(bottom: 12.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppThemes.lightShadow,
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 8.0,
-                ),
-                title: Text(
-                  'Language',
-                  style: TextStyle(
-                    fontSize: AppThemes.fontSizeLarge,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'English',
-                      style: TextStyle(
-                        fontSize: AppThemes.fontSizeLarge,
-                        color: AppThemes.getSubtleTextColor(
-                          Theme.of(context).brightness == Brightness.dark,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8.0),
-                    Icon(
-                      Icons.chevron_right,
-                      color: AppThemes.getSubtleTextColor(
-                        Theme.of(context).brightness == Brightness.dark,
-                      ),
-                    ),
-                  ],
-                ),
-                // onTap: () {
-                //   // Add language selection logic here
-                // },
               ),
             ),
 
