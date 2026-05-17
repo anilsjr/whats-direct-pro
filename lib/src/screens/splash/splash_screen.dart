@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
-import 'package:provider/provider.dart';
-import '../../provider/term_conditions_provider.dart';
-import '../../../core/widgets/term_and_conditions.dart';
+import '../../../core/ads_units/app_open_ad.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
@@ -20,31 +18,21 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _initializeApp() async {
+    // Load and show app open ad
+    final appOpenAdManager = AppOpenAdManager();
+    await appOpenAdManager.loadAd();
+    await appOpenAdManager.showAdIfAvailable();
+
     // Wait for splash duration
     await Future.delayed(const Duration(milliseconds: 1000));
 
-    // Load preferences first
-    final termsProvider = Provider.of<TermsConditionsProvider>(
-      context,
-      listen: false,
-    );
-    await termsProvider.loadFirstVisitFromPrefs();
-
     if (!mounted) return;
 
-    if (termsProvider.isFirstVisit) {
-      // Navigate to terms screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const TermsAndConditionsWidget()),
-      );
-    } else {
-      // Navigate directly to home screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
-      );
-    }
+    // Navigate directly to home screen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const HomeScreen()),
+    );
   }
 
   @override

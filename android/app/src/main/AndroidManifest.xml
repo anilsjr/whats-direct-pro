@@ -47,7 +47,7 @@
         <!-- Google Mobile Ads App ID -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7907772270332783~6999011783" />
+            android:value="ca-app-pub-8620043813842300~5032768198" />
             
         <!-- Overlay Service -->
         <service

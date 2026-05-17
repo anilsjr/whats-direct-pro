@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import 'package:whats_direct_pro/ads_units/banner_ad.dart' show BannerAdWidget;
+import 'package:whats_direct_pro/core/ads_units/banner_ad.dart';
+// import 'package:whats_direct_pro/core/widgets/author.dart';
 import 'package:whats_direct_pro/src/screens/about/about_screen.dart';
 import 'package:whats_direct_pro/src/screens/setting/setting_screen.dart'
     show SettingScreen;
@@ -135,16 +136,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              PopupMenuItem(
-                value: 'about',
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8.0,
-                    horizontal: 16.0,
-                  ),
-                  child: Text('About'),
-                ),
-              ),
+              // PopupMenuItem(
+              //   value: 'about',
+              //   child: Padding(
+              //     padding: const EdgeInsets.symmetric(
+              //       vertical: 8.0,
+              //       horizontal: 16.0,
+              //     ),
+              //     child: Text('About'),
+              //   ),
+              // ),
               PopupMenuItem(
                 value: 'settings',
                 child: Padding(
@@ -422,9 +423,9 @@ class _HomeScreenState extends State<HomeScreen> {
               // const Spacer(),
 
               // Footer Section
-              // const SizedBox(height: 30),
+              const SizedBox(height: 30),
               // buildBy(context),
-              // BannerAdWidget(), // Add ad at the bottom
+              BannerAdWidget(), // Add ad at the bottom
             ],
           ),
         ),
