@@ -5,16 +5,10 @@ allprojects {
     }
 }
 
-subprojects {
-    plugins.withType<JavaPlugin> {
-        extensions.configure<JavaPluginExtension> {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
-        }
-    }
-}
-
-val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
+val newBuildDir: Directory =
+    rootProject.layout.buildDirectory
+        .dir("../../build")
+        .get()
 rootProject.layout.buildDirectory.value(newBuildDir)
 
 subprojects {
@@ -27,4 +21,14 @@ subprojects {
 
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
+}
+
+subprojects {
+    if (name == "flutter_keyboard_visibility") {
+        pluginManager.withPlugin("com.android.library") {
+            extensions.configure<com.android.build.api.variant.LibraryAndroidComponentsExtension> {
+                finalizeDsl { it.compileSdk = 36 }
+            }
+        }
+    }
 }

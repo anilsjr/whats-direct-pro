@@ -1,0 +1,261 @@
+Build a Flutter app for android phones named "WhatsApp Direct Pro" (package: whatsapp_direct_pro). It opens a WhatsApp chat with any number without saving a contact. Android and iOS.
+
+=====================================================
+CODING STYLE: "ponytail" (lazy senior dev) - follow strictly
+=====================================================
+Before writing code, stop at the first rung that holds:
+1. Does it need to exist at all? (YAGNI)
+2. Does it already exist in the codebase? Reuse it.
+3. Does the Dart/Flutter SDK already do it? Use it.
+4. Does a native platform feature cover it? Use it.
+5. Does an already-installed dependency solve it? Use it.
+6. Can it be one line? Make it one line.
+7. Only then write the minimum code that works.
+
+Rules:
+- NO abstraction layers: no repositories, services, use-cases, interfaces, DI, or models for their own sake.
+- NO bloc / cubit / provider / riverpod / get_it. Use StatefulWidget + setState + ValueNotifiers.
+- NO feature-based or clean-architecture folders. Flat: 6 files in lib/.
+- Prefer SDK widgets, arrow functions, collection-if, cascades. Use shared_preferences directly in widgets.
+- No new dependency if it can be avoided. No boilerplate, and no comments that restate code.
+- Mark deliberate shortcuts with a `// ponytail:` comment naming the ceiling and upgrade path.
+- Not lazy about: input validation, error handling that prevents data loss, accessibility, and anything I explicitly request.
+- Leave small runnable checks only where specified (tests below). No mocks, no fixtures.
+- Before coding, list in 3-5 lines which ponytail shortcuts you plan to take.
+
+=====================================================
+FILES (exactly these)
+=====================================================
+lib/main.dart      - main(), theme + noAds + lang loading, MaterialApp, bottom-nav shell
+lib/home.dart      - HomePage + top-level `String? parse(String raw, String iso)`
+lib/recent.dart    - RecentPage
+lib/settings.dart  - SettingsPage
+lib/ads.dart       - banner widget, interstitial video, app-open ad
+lib/lang.dart      - translations
+test/phone_test.dart, test/lang_test.dart
+
+Dependencies (only these): flutter_localizations (sdk), shared_preferences, url_launcher, country_picker, phone_numbers_parser, google_mobile_ads.
+
+=====================================================
+NAVIGATION (main.dart shell)
+=====================================================
+- Bottom Material 3 NavigationBar with 3 tabs: Home (Icons.chat), Recent (Icons.history), Settings (Icons.settings).
+- Scaffold(body: IndexedStack(index, [HomePage, RecentPage, SettingsPage]), bottomNavigationBar: Column(min) [banner ad, NavigationBar]).
+- Pages have only an AppBar title (no back arrow). IndexedStack keeps the phone and message input alive across tabs.
+- Recent reloads when it becomes visible: use a global `ValueNotifier<int> recentTick` that Home bumps after a successful send.
+- Theme: Material 3, seed color 0xFF25D366, light and dark, driven by `ValueNotifier<ThemeMode>`.
+
+=====================================================
+HOME PAGE (top to bottom)
+=====================================================
+1. Country selector: tappable tile with flag + "+code" + country name. Opens the country_picker bottom sheet. Default India (IN). Persist the last choice.
+2. Phone field: keyboardType phone, autofillHints telephoneNumber, textDirection LTR always. Native paste/copy only (no custom clipboard code).
+3. Message field: optional, multiline, minLines 4, maxLines 8.
+4. Message samples: horizontally scrolling row of ActionChips. Tap a chip -> its text goes into the message field.
+   - First chip "+ Custom" opens a dialog with a TextField; Save adds it to the list.
+   - Long-press a custom chip to delete it (default samples can't be deleted).
+   - Defaults are stored as translation keys s1..s5, translated at display time:
+     s1 "Hello!", s2 "Is this still available?", s3 "Thanks, talk soon!", s4 "Please call me back.", s5 "Where are you?"
+   - Custom samples are stored in SharedPreferences as a StringList and are never translated.
+5. Send button (full-width FilledButton):
+   - Validate with parse(); on error show errorText on the phone field and refocus it.
+   - If valid: launchUrl('https://wa.me/<digits>?text=<Uri.encodeComponent(msg)>', mode: LaunchMode.externalApplication).
+   - If it launched: save to recents and bump recentTick. If not: SnackBar t('errLaunch').
+   - Ignore repeated taps while launching (bool flag + spinner on the button).
+
+=====================================================
+PHONE VALIDATION: String? parse(String raw, String isoCode)
+=====================================================
+Returns the digits-only international number (e.g. "918881111111") or null. Use PhoneNumber.parse from phone_numbers_parser.
+- Strip spaces, hyphens, dots, parentheses, and Unicode whitespace/dashes.
+- Convert Arabic-Indic, Extended Arabic-Indic and full-width digits to ASCII.
+- Leading "00" -> "+". A "+" number parses without the selected country; otherwise use the selected country.
+- If a "+" number is valid, switch the selected country to the detected one.
+- Reject: empty, lone "+" or "00", letters, extensions ("x123"), ";", multiple "+", unbalanced parentheses, too short or too long, invalid country code.
+- Map each failure to a translated error key: errEmpty, errInvalid, errParens, errChars, errAmbiguous.
+test/phone_test.dart asserts:
+  "+91 8881111111", "+91-8881111111", "0091 8881111111", "88811-11111" (IN) -> "918881111111"
+  "123", "call 8881111111", "8881111111x123", "+91+8881111111", "(8881111111" -> null
+
+=====================================================
+RECENT PAGE
+=====================================================
+- Keep the last 50 successfully opened numbers in SharedPreferences (StringList of "iso|digits|epochMs"). On a new send: remove any identical number, insert at index 0, trim to 50.
+- ListTile: flag/code + number + relative time (now / N min ago / N h ago / yesterday / N days ago / dd-MM-yyyy after 7 days; no intl package).
+- Tap the row or the WhatsApp icon -> open the chat. Swipe (Dismissible) deletes one entry.
+- AppBar action "Clear all" with a confirm dialog. Empty state: centered t('noRecent').
+
+=====================================================
+SETTINGS PAGE (ListView of ListTiles)
+=====================================================
+1. Dark / Light: SwitchListTile, persisted.
+2. Language: ListTile (Icons.language). The subtitle is the native name of the current language, or t('systemDefault'). Tap opens a dialog with RadioListTiles: "System default" first, then the 15 languages. Selecting one sets `lang.value`, saves key "lang" (remove the key for System default) and closes the dialog. The UI updates instantly with no restart.
+3. More apps: opens `https://play.google.com/store/apps/dev?id=YOUR_ID` via url_launcher (placeholder).
+4. Stop ads: SwitchListTile, persisted under key "noAds". Writes `noAds.value`.
+   // ponytail: free toggle for now; upgrade path = in_app_purchase "remove ads".
+5. Footer: t('version') "1.0.0".
+
+=====================================================
+ADS (lib/ads.dart; top-level functions + one widget)
+=====================================================
+Ad unit IDs: kDebugMode -> Google test IDs; release -> `YOUR_*` placeholders. Switch by Platform.isAndroid.
+  Android test: banner ca-app-pub-3940256099942544/6300978111, app open .../9257395921, interstitial .../8691691433
+  iOS test: banner ca-app-pub-3940256099942544/2934735716, app open .../5575463023, interstitial .../5135589807
+Every ad function starts with `if (noAds.value) return;`
+
+a) BannerBox (StatefulWidget): BannerAd AdSize.banner. Renders SizedBox.shrink() until loaded. Disposes in dispose(). Placed ONCE in the shell above the NavigationBar, so it shows on Home, Recent and Settings (no per-page copies). Wrap it in ValueListenableBuilder on noAds so it disappears instantly.
+
+b) showTabAd(): interstitial VIDEO ad on tab change.
+   - Preload one InterstitialAd; reload after dismiss or failure.
+   - Call from NavigationBar.onDestinationSelected only when the index actually changes.
+   - Cooldown: skip if the last interstitial was shown < 60 s ago (`const gap = Duration(seconds: 60)`). // ponytail: policy-safe ceiling, tune as needed.
+   - Never block navigation: switch the tab immediately; if the ad isn't ready, just navigate.
+   - Skip while an app-open ad is showing (shared `bool busy`).
+
+c) showAppOpen(): load on startup; show on cold start as soon as ready (wait max 4 s, then continue). Also show on resume from background (AppLifecycleListener.onResume), at most once per 4 hours; discard cached ads older than 4 h. Set `busy = true` while showing.
+
+d) When noAds turns on: dispose the loaded banner and interstitial.
+e) Fail silently. Dispose ads in dispose().
+
+=====================================================
+LANGUAGES (lib/lang.dart; no .arb, no intl, no gen-l10n, no codegen)
+=====================================================
+15 languages (code, native name): en English, hi हिन्दी, ar العربية, zh 中文, es Español, pt Português, id Bahasa Indonesia, ru Русский, fr Français, bn বাংলা, ur اردو, tr Türkçe, de Deutsch, ja 日本語, sw Kiswahili.
+Arabic uses Locale('ar') with Modern Standard Arabic wording understood in Egypt. Chinese is Simplified (zh).
+
+lang.dart contains:
+- `final lang = ValueNotifier<Locale>(const Locale('en'));`
+- `const names = {'en': 'English', ...15...};`
+- `const _s = <String, Map<String, String>>{ 'en': {...}, 'hi': {...}, ... };` (same keys in every language, compact, one line per key where possible)
+- `String t(String k, [Map<String, String> v = const {}])`: looks up `_s[lang.value.languageCode]?[k] ?? _s['en']![k]!` and replaces {n}-style placeholders from `v`.
+
+Keys to translate (no hardcoded UI strings anywhere else):
+- Tabs: home, recent, settings
+- Home: country, phone, phoneHint, message, samples, custom, send, addSample, save, cancel, delete, s1..s5
+- Errors: errEmpty, errInvalid, errParens, errChars, errAmbiguous, errLaunch
+- Recent: noRecent, clearAll, clearConfirm, now, minAgo ({n}), hAgo ({n}), yesterday, dAgo ({n})
+- Settings: dark, moreApps, stopAds, language, systemDefault, version
+The app name stays "WhatsApp Direct Pro" in every language. Translations must be natural, native-quality and short (about 30 characters or fewer, to fit chips and tiles), not literal word-for-word.
+
+Wiring (main.dart):
+- Wrap MaterialApp in ValueListenableBuilder<Locale> on `lang`. Set locale: lang.value, supportedLocales: names.keys.map(Locale.new), localizationsDelegates: [GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate, GlobalCupertinoLocalizations.delegate, CountryLocalizations.delegate] (this also translates the country picker).
+- RTL (ar, ur) flips automatically via Locale. Use EdgeInsetsDirectional instead of left/right. The phone field and wa.me URL stay LTR.
+- First launch: use the device locale if its languageCode is in `names`, else 'en'. Load saved "lang" from prefs before runApp.
+
+test/lang_test.dart: one plain flutter_test asserting every language in `_s` has exactly the same keys as 'en', and that `_s.keys` equals `names.keys`.
+
+=====================================================
+PLATFORM SETUP
+=====================================================
+- main(): WidgetsFlutterBinding.ensureInitialized(); await MobileAds.instance.initialize(); load prefs (theme, lang, noAds, country); runApp.
+- Android: INTERNET permission; <queries> entry for https VIEW intents (url_launcher); AdMob meta-data com.google.android.gms.ads.APPLICATION_ID (test app ID ca-app-pub-3940256099942544~3347511713 for dev).
+- iOS Info.plist: LSApplicationQueriesSchemes https; GADApplicationIdentifier (test ID ca-app-pub-3940256099942544~1458002511); SKAdNetworkItems as required by google_mobile_ads.
+
+=====================================================
+OUTPUT
+=====================================================
+Give: the pubspec.yaml dependencies block, the platform config snippets, all 6 lib files in full, and both test files. Keep lib/ as short as possible (target under 600 lines total, ads.dart under ~90 lines). No extra files, no README, no explanations beyond the initial 3-5 line ponytail shortcut list.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+For your WhatsApp Direct Pro Flutter app, you can build everything using just 5 pub.dev packages. You don't need Bloc, Provider, Riverpod, or any architecture packages.
+
+## Recommended pub.dev libraries
+
+| Package                                                                                      | Purpose                                                               | Required? |
+| -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | --------- |
+| [shared_preferences](https://pub.dev/packages/shared_preferences?utm_source=chatgpt.com)     | Save recent numbers, country, custom messages, theme, and ad settings | Yes       |
+| [url_launcher](https://pub.dev/packages/url_launcher?utm_source=chatgpt.com)                 | Open WhatsApp chats and Play Store links                              | Yes       |
+| [country_picker](https://pub.dev/packages/country_picker?utm_source=chatgpt.com)             | Country selection with flags and dial codes                           | Yes       |
+| [phone_numbers_parser](https://pub.dev/packages/phone_numbers_parser?utm_source=chatgpt.com) | Validate and format international phone numbers                       | Yes       |
+| [google_mobile_ads](https://pub.dev/packages/google_mobile_ads?utm_source=chatgpt.com)       | Banner, interstitial, and app-open ads                                | Yes       |
+| [share_plus](https://pub.dev/packages/share_plus?utm_source=chatgpt.com)                     | Share app links or messages through the native share sheet            | Optional  |
+| [in_app_purchase](https://pub.dev/packages/in_app_purchase?utm_source=chatgpt.com)           | Paid remove-ads purchase in the future                                | Future    |
+
+## Install the 5 required packages
+
+```
+flutter pub add shared_preferences url_launcher country_picker phone_numbers_parser google_mobile_ads
+```
+
+Optional:
+
+```
+flutter pub add share_plus
+```
+
+## pubspec.yaml
+
+```
+name: whatsapp_direct_pro
+description: Open WhatsApp chats without saving contacts.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: any
+  url_launcher: any
+  country_picker: any
+  phone_numbers_parser: any
+  google_mobile_ads: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+```
+
+Use `flutter pub add` to resolve compatible versions and generate your lockfile. The `any` constraints above are for illustration, not recommended for a final release.
+
+## Features that need no extra library
+
+| Feature               | Built-in Flutter/Dart solution |
+| --------------------- | ------------------------------ |
+| Bottom navigation     | `NavigationBar`                |
+| Preserve tab state    | `IndexedStack`                 |
+| Dark/light theme      | `ValueNotifier<ThemeMode>`     |
+| Phone input           | `TextField`                    |
+| Message templates     | `ActionChip`                   |
+| Delete recent number  | `Dismissible`                  |
+| Confirmation popup    | `AlertDialog`                  |
+| Relative time         | `DateTime` and `Duration`      |
+| Format date           | Manual `DateTime` formatting   |
+| WhatsApp URL encoding | `Uri.encodeComponent()`        |
+
+
+## Suggested project structure
+
+```
+lib/
+├── main.dart
+├── home.dart
+├── recent.dart
+├── settings.dart
+└── ads.dart
+
+test/
+└── phone_test.dart
+```
+
+My recommendation: Stick with the five required packages. `share_plus` is unnecessary for your current More Apps feature because `url_launcher` already opens the developer page.
+
+One important detail: `google_mobile_ads` provides all three requested ad formats, but Google does not guarantee that an interstitial will contain video. Also, the Stop Ads switch should prevent new ads and dispose cached ads; the four-hour app-open cooldown and 60-second interstitial cooldown can be handled using Dart's `DateTime`, without another package.

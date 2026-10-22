@@ -1,46 +1,17 @@
-## Flutter wrapper
--keep class io.flutter.app.** { *; }
--keep class io.flutter.plugin.**  { *; }
--keep class io.flutter.util.**  { *; }
--keep class io.flutter.view.**  { *; }
--keep class io.flutter.**  { *; }
--keep class io.flutter.plugins.**  { *; }
--dontwarn io.flutter.embedding.**
-
-## Gson rules
--keepattributes Signature
--keepattributes *Annotation*
--dontwarn sun.misc.**
--keep class com.google.gson.** { *; }
--keep class * implements com.google.gson.TypeAdapterFactory
--keep class * implements com.google.gson.JsonSerializer
--keep class * implements com.google.gson.JsonDeserializer
-
-## Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
--keep,allowobfuscation,allowshrinking interface retrofit2.Call
--keep,allowobfuscation,allowshrinking class retrofit2.Response
--keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
-
-## Kotlin
--keep class kotlin.** { *; }
--keep class kotlin.Metadata { *; }
--dontwarn kotlin.**
--keepclassmembers class **$WhenMappings {
-    <fields>;
-}
--keepclassmembers class kotlin.Metadata {
-    public <methods>;
+# Room creates generated database implementations through reflection. The older
+# Room runtime pulled in by the ads SDK does not preserve their constructors
+# under R8 full mode.
+-keep class * extends androidx.room.RoomDatabase {
+    public <init>();
 }
 
-## Keep AndroidX
--keep class androidx.** { *; }
--keep interface androidx.** { *; }
--dontwarn androidx.**
+# Pigeon's JNI bridge looks up these methods by their original JVM signatures,
+# including parameter types such as kotlin.coroutines.Continuation.
+-keep,includedescriptorclasses class io.flutter.plugins.sharedpreferences.** { *; }
 
-## Google Mobile Ads
--keep class com.google.android.gms.** { *; }
--dontwarn com.google.android.gms.**
-
-## Keep your models
--keep class com.anil.whatsdirectpro.** { *; }
-
+# Kotlin helpers referenced directly by package:jni's suspend-function bridge.
+-keep class kotlin.coroutines.Continuation { *; }
+-keep class kotlin.coroutines.intrinsics.** { *; }
+-keep class kotlin.Result { *; }
+-keep class kotlin.Result$Failure { *; }
+-keep class kotlin.Unit { *; }

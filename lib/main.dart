@@ -1,51 +1,31 @@
+﻿import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'src/provider/theme_provider.dart';
-import 'core/config/app_theme.dart';
-import 'src/screens/splash/splash_screen.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'app.dart';
+import 'config/ads.dart';
+import 'config/lang.dart';
 
-void main() async {
+// Keep shared app helpers available to screens that import this entry point.
+export 'app.dart';
+
+/// Restores saved settings and launches the app.
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Google Mobile Ads
-  await MobileAds.instance.initialize();
-
-  // Set portrait orientation only
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-
-  // Initialize shared preferences
-  final themeProvider = ThemeProvider();
-  await themeProvider.loadThemeFromPrefs();
-
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeProvider>(create: (_) => themeProvider),
-      ],
-      child: const MyApp(),
-    ),
-  );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-
-    return MaterialApp(
-      // title: 'WhatsApp Direct Pro',
-      theme: themeProvider.isDarkMode
-          ? AppThemes.darkTheme
-          : AppThemes.lightTheme,
-      home: const SplashScreen(),
-      debugShowCheckedModeBanner: false,
-    );
+  prefs = await SharedPreferences.getInstance();
+  // Apply saved preferences before rendering the first frame.
+  theme.value = prefs.getBool('dark') == true
+      ? ThemeMode.dark
+      : ThemeMode.light;
+  noAds.value = prefs.getBool('noAds') ?? false;
+  reminders.value = prefs.getBool('reminders') ?? false;
+  final code = prefs.getString('lang');
+  lang.value = code != null && names.containsKey(code)
+      ? Locale(code)
+      : const Locale('en');
+  runApp(const MyApp());
+  // Start optional services after launching the UI.
+  if (prefs.getBool('reminders') == true) {
+    unawaited(updateReminders(true));
   }
+  if (prefs.getBool('onboarded') == true) await initAds();
 }
