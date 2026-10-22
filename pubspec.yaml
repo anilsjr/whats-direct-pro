@@ -1,4 +1,4 @@
-﻿name: whatsapp_direct_pro
+name: whatsapp_direct_pro
 description: Open WhatsApp chats without saving contacts.
 publish_to: none
 version: 1.0.0+1
@@ -17,10 +17,17 @@ dependencies:
   flutter_local_notifications: ^19.5.0
   flutter_timezone: ^5.1.1
   timezone: ^0.10.1
+  flutter_launcher_icons: ^0.14.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
 flutter:
   uses-material-design: true
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/icons/logo.jpg
+  remove_alpha_ios: true
 

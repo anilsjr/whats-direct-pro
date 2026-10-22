@@ -125,7 +125,33 @@ class _HomePageState extends State<HomePage> {
     Localizations.localeOf(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WhatsApp Direct Pro'),
+        title: const Text(
+          'Whatsapp Direct Msg Pro',
+          style: TextStyle(
+            color: Color(0xFF25D366),
+            fontSize: 25,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        actions: [
+          IconButton(
+            tooltip: t('language'),
+            onPressed: () => chooseLanguage(context),
+            icon: const Icon(Icons.language_outlined),
+          ),
+          IconButton(
+            tooltip: t(theme.value == ThemeMode.dark ? 'light' : 'dark'),
+            onPressed: () => chooseTheme(
+              context,
+              theme.value != ThemeMode.dark,
+            ),
+            icon: Icon(
+              theme.value == ThemeMode.dark
+                  ? Icons.light_mode_outlined
+                  : Icons.dark_mode_outlined,
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         top: false,
