@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
     if (remove != null) {
       next.remove(remove);
     } else if (!next.contains(result)) {
-      next.add(result);
+      next.insert(0, result);
     }
     if (await persist(prefs.setStringList('samples', next))) {
       if (mounted) setState(() => samples = next);
@@ -124,34 +124,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Localizations.localeOf(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Whatsapp Direct Msg Pro',
-          style: TextStyle(
-            color: Color(0xFF25D366),
-            fontSize: 25,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        actions: [
-          IconButton(
-            tooltip: t('language'),
-            onPressed: () => chooseLanguage(context),
-            icon: const Icon(Icons.language_outlined),
-          ),
-          IconButton(
-            tooltip: t(theme.value == ThemeMode.dark ? 'light' : 'dark'),
-            onPressed: () => chooseTheme(
-              context,
-              theme.value != ThemeMode.dark,
-            ),
-            icon: Icon(
-              theme.value == ThemeMode.dark
-                  ? Icons.light_mode_outlined
-                  : Icons.dark_mode_outlined,
-            ),
-          ),
-        ],
+      appBar: AppTopBar(
+        title: 'Whatsapp Direct',
+        isDark: theme.value == ThemeMode.dark,
+        onLanguage: () => chooseLanguage(context),
+        onTheme: () => chooseTheme(context, theme.value != ThemeMode.dark),
       ),
       body: SafeArea(
         top: false,
@@ -250,11 +227,6 @@ class _HomePageState extends State<HomePage> {
                               label: Text(t('custom')),
                               onPressed: editSamples,
                             ),
-                            for (var i = 1; i <= 5; i++)
-                              ActionChip(
-                                label: Text(t('s$i')),
-                                onPressed: () => message.text = t('s$i'),
-                              ),
                             for (final sample in samples)
                               Tooltip(
                                 message: t('holdDelete'),
@@ -268,6 +240,11 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () => message.text = sample,
                                   ),
                                 ),
+                              ),
+                            for (var i = 1; i <= 5; i++)
+                              ActionChip(
+                                label: Text(t('s$i')),
+                                onPressed: () => message.text = t('s$i'),
                               ),
                           ],
                         ),
@@ -308,8 +285,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: NavigationBar(
-        height: 64,
+      bottomNavigationBar: AppBottomNavBar(
         selectedIndex: 0,
         onDestinationSelected: (index) {
           if (index == 1) {
@@ -324,22 +300,6 @@ class _HomePageState extends State<HomePage> {
             );
           }
         },
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.chat_outlined),
-            selectedIcon: const Icon(Icons.chat),
-            label: t('home'),
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.build_outlined),
-            selectedIcon: const Icon(Icons.build),
-            label: t('tools'),
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.settings_outlined),
-            label: t('settings'),
-          ),
-        ],
       ),
     );
   }

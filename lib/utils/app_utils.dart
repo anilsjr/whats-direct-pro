@@ -1,5 +1,89 @@
+import 'package:flutter/material.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../config/lang.dart';
+
+class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
+  const AppTopBar({
+    super.key,
+    required this.title,
+    required this.isDark,
+    required this.onLanguage,
+    required this.onTheme,
+  });
+
+  final String title;
+  final bool isDark;
+  final VoidCallback onLanguage;
+  final VoidCallback onTheme;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: Color(0xFF25D366),
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      actions: [
+        IconButton(
+          tooltip: t('language'),
+          onPressed: onLanguage,
+          icon: const Icon(Icons.language_outlined),
+        ),
+        IconButton(
+          tooltip: t(isDark ? 'light' : 'dark'),
+          onPressed: onTheme,
+          icon: Icon(
+            isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class AppBottomNavBar extends StatelessWidget {
+  const AppBottomNavBar({
+    super.key,
+    required this.selectedIndex,
+    required this.onDestinationSelected,
+  });
+
+  final int selectedIndex;
+  final ValueChanged<int> onDestinationSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return NavigationBar(
+      height: 64,
+      selectedIndex: selectedIndex,
+      onDestinationSelected: onDestinationSelected,
+      destinations: [
+        NavigationDestination(
+          icon: const Icon(Icons.chat_outlined),
+          selectedIcon: const Icon(Icons.chat),
+          label: t('home'),
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.build_outlined),
+          selectedIcon: const Icon(Icons.build),
+          label: t('tools'),
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.settings_outlined),
+          label: t('settings'),
+        ),
+      ],
+    );
+  }
+}
 
 String normalize(String raw) =>
     String.fromCharCodes(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import '../config/lang.dart';
+import '../utils/app_utils.dart';
 import 'settings.dart';
 
 class ToolScreen extends StatelessWidget {
@@ -19,32 +19,11 @@ class ToolScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'WhatsApp',
-          style: TextStyle(
-            color: Color(0xFF25D366),
-            fontSize: 25,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        actions: [
-          IconButton(
-            tooltip: t('language'),
-            onPressed: () => chooseLanguage(context),
-            icon: const Icon(Icons.language_outlined),
-          ),
-          IconButton(
-            tooltip: t(theme.value == ThemeMode.dark ? 'light' : 'dark'),
-            onPressed: () =>
-                chooseTheme(context, theme.value != ThemeMode.dark),
-            icon: Icon(
-              theme.value == ThemeMode.dark
-                  ? Icons.light_mode_outlined
-                  : Icons.dark_mode_outlined,
-            ),
-          ),
-        ],
+      appBar: AppTopBar(
+        title: 'Whatsapp Direct',
+        isDark: theme.value == ThemeMode.dark,
+        onLanguage: () => chooseLanguage(context),
+        onTheme: () => chooseTheme(context, theme.value != ThemeMode.dark),
       ),
       body: SafeArea(
         top: false,
@@ -138,26 +117,9 @@ class ToolScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: NavigationBar(
-        height: 64,
+      bottomNavigationBar: AppBottomNavBar(
         selectedIndex: 1,
         onDestinationSelected: (index) => navigate(context, index),
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.chat_outlined),
-            selectedIcon: const Icon(Icons.chat),
-            label: t('home'),
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.build_outlined),
-            selectedIcon: const Icon(Icons.build),
-            label: t('tools'),
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.settings_outlined),
-            label: t('settings'),
-          ),
-        ],
       ),
     );
   }

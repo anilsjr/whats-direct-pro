@@ -14,7 +14,7 @@ dependencies:
   country_picker: 2.0.27
   phone_numbers_parser: 9.0.28
   google_mobile_ads: ^8.0.0
-  flutter_local_notifications: ^19.5.0
+  flutter_local_notifications: ^20.1.0
   flutter_timezone: ^5.1.1
   timezone: ^0.10.1
   flutter_launcher_icons: ^0.14.4

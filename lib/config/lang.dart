@@ -62,7 +62,7 @@ const _s = <String, Map<String, String>>{
     'cancel': 'Cancel',
     'delete': 'Delete',
     's1': 'Hello!',
-    's2': 'Is this still available?',
+    's2': 'Can we connect?',
     's3': 'Thanks, talk soon!',
     's4': 'Please call me back.',
     's5': 'Where are you?',
