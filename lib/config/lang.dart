@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 final lang = ValueNotifier<Locale>(const Locale('en'));
 const names = {
@@ -20,6 +20,7 @@ const names = {
 };
 const _s = <String, Map<String, String>>{
   'en': {
+    'form': 'Form',
     'light': 'Light mode',
     'back': 'Back',
     'next': 'Next',
@@ -46,6 +47,7 @@ const _s = <String, Map<String, String>>{
         'Need to send a quick message? Open a chat without saving a contact.',
     'reminderEvening': 'Your quick messages are ready when you need them.',
     'home': 'Home',
+    'tools': 'Tools',
     'recent': 'Recent',
     'settings': 'Settings',
     'country': 'Country / region',
@@ -80,6 +82,7 @@ const _s = <String, Map<String, String>>{
     'dAgo': '{n} days ago',
     'dark': 'Dark mode',
     'moreApps': 'More apps',
+    'rateUs': 'Rate us',
     'stopAds': 'Stop ads',
     'language': 'Language',
     'systemDefault': 'System default',
@@ -92,6 +95,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'Hold to delete',
   },
   'hi': {
+    'form': 'फ़ॉर्म',
     'light': 'लाइट मोड',
     'back': 'पीछे',
     'next': 'आगे',
@@ -161,6 +165,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'हटाने के लिए दबाए रखें',
   },
   'ar': {
+    'form': 'النموذج',
     'light': 'الوضع الفاتح',
     'back': 'السابق',
     'next': 'التالي',
@@ -231,6 +236,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'اضغط مطولًا للحذف',
   },
   'zh': {
+    'form': '表单',
     'light': '浅色模式',
     'back': '返回',
     'next': '下一步',
@@ -298,6 +304,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': '长按删除',
   },
   'es': {
+    'form': 'Formulario',
     'light': 'Modo claro',
     'back': 'Atrás',
     'next': 'Siguiente',
@@ -371,6 +378,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'Mantén pulsado para eliminar',
   },
   'pt': {
+    'form': 'Formulário',
     'light': 'Modo claro',
     'back': 'Voltar',
     'next': 'Próximo',
@@ -443,6 +451,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'Segure para excluir',
   },
   'id': {
+    'form': 'Formulir',
     'light': 'Mode terang',
     'back': 'Kembali',
     'next': 'Lanjut',
@@ -515,6 +524,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'Tahan untuk menghapus',
   },
   'ru': {
+    'form': 'Форма',
     'light': 'Светлая тема',
     'back': 'Назад',
     'next': 'Далее',
@@ -587,6 +597,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'Удерживайте для удаления',
   },
   'fr': {
+    'form': 'Formulaire',
     'light': 'Mode clair',
     'back': 'Retour',
     'next': 'Suivant',
@@ -660,6 +671,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'Appui long pour supprimer',
   },
   'bn': {
+    'form': 'ফর্ম',
     'light': 'লাইট মোড',
     'back': 'পেছনে',
     'next': 'পরবর্তী',
@@ -732,6 +744,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'মুছতে চেপে ধরুন',
   },
   'ur': {
+    'form': 'فارم',
     'light': 'لائٹ موڈ',
     'back': 'واپس',
     'next': 'اگلا',
@@ -803,6 +816,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'حذف کرنے کے لیے دبائے رکھیں',
   },
   'tr': {
+    'form': 'Form',
     'light': 'Açık mod',
     'back': 'Geri',
     'next': 'İleri',
@@ -875,6 +889,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'Silmek için basılı tutun',
   },
   'de': {
+    'form': 'Formular',
     'light': 'Heller Modus',
     'back': 'Zurück',
     'next': 'Weiter',
@@ -947,6 +962,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': 'Zum Löschen gedrückt halten',
   },
   'ja': {
+    'form': 'フォーム',
     'light': 'ライトモード',
     'back': '戻る',
     'next': '次へ',
@@ -1014,6 +1030,7 @@ const _s = <String, Map<String, String>>{
     'holdDelete': '長押しで削除',
   },
   'sw': {
+    'form': 'Fomu',
     'light': 'Hali angavu',
     'back': 'Rudi',
     'next': 'Endelea',

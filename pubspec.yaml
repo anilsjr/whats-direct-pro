@@ -14,11 +14,12 @@ dependencies:
   country_picker: 2.0.27
   phone_numbers_parser: 9.0.28
   google_mobile_ads: ^8.0.0
-  introduction_screen: ^3.1.17
   flutter_local_notifications: ^19.5.0
   flutter_timezone: ^5.1.1
   timezone: ^0.10.1
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   flutter_lints: ^5.0.0
 flutter:
   uses-material-design: true

@@ -8,9 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'config/ads.dart';
 import 'screens/home.dart';
-import 'screens/recent.dart';
 import 'screens/settings.dart';
 import 'config/lang.dart';
 
@@ -49,7 +47,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _AppState extends State<MyApp> {
-  int index = 0;
   late bool onboarded = prefs.getBool('onboarded') ?? false;
   bool background = false;
   // Refresh language and enabled services when the app resumes.
@@ -60,7 +57,6 @@ class _AppState extends State<MyApp> {
       if (background) {
         background = false;
         if (onboarded) {
-          showAppOpen();
           if (prefs.getBool('reminders') == true) {
             unawaited(updateReminders(true));
           }
@@ -78,7 +74,6 @@ class _AppState extends State<MyApp> {
   @override
   void dispose() {
     lifecycle.dispose();
-    disposeAds();
     super.dispose();
   }
 
@@ -131,61 +126,17 @@ class _AppState extends State<MyApp> {
         darkTheme: appearance(Brightness.dark),
         themeMode: mode,
         supportedLocales: names.keys.map(Locale.new),
-        localizationsDelegates: const [
+        localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
-          CountryLocalizations.delegate,
+          // Missing picker translations fall back to the country names.
+          if (CountryLocalizations.delegate.isSupported(locale))
+            CountryLocalizations.delegate,
         ],
-        home: !onboarded
-            ? OnboardingPage(
-                onDone: () {
-                  setState(() => onboarded = true);
-                  unawaited(initAds());
-                },
-              )
-            : Scaffold(
-                // Preserve each tab's state while switching destinations.
-                body: IndexedStack(
-                  index: index,
-                  children: const [HomePage(), RecentPage(), SettingsPage()],
-                ),
-                bottomNavigationBar: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ValueListenableBuilder(
-                      valueListenable: noAds,
-                      builder: (_, off, child) =>
-                          off ? const SizedBox.shrink() : const BannerBox(),
-                    ),
-                    NavigationBar(
-                      selectedIndex: index,
-                      onDestinationSelected: (next) {
-                        if (next == index) return;
-                        setState(() => index = next);
-                        if (next == 1) recentTick.value++;
-                        showTabAd();
-                      },
-                      destinations: [
-                        NavigationDestination(
-                          icon: const Icon(Icons.chat_outlined),
-                          selectedIcon: const Icon(Icons.chat),
-                          label: t('home'),
-                        ),
-                        NavigationDestination(
-                          icon: const Icon(Icons.history),
-                          label: t('recent'),
-                        ),
-                        NavigationDestination(
-                          icon: const Icon(Icons.settings_outlined),
-                          selectedIcon: const Icon(Icons.settings),
-                          label: t('settings'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+        home: onboarded
+            ? const HomePage()
+            : OnboardingPage(onDone: () => setState(() => onboarded = true)),
       ),
     ),
   );
