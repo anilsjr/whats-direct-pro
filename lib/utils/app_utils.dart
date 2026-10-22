@@ -10,12 +10,14 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
     required this.isDark,
     required this.onLanguage,
     required this.onTheme,
+    this.automaticallyImplyLeading = true,
   });
 
   final String title;
   final bool isDark;
   final VoidCallback onLanguage;
   final VoidCallback onTheme;
+  final bool automaticallyImplyLeading;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -23,6 +25,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: automaticallyImplyLeading,
       title: Text(
         title,
         style: const TextStyle(

@@ -6,6 +6,7 @@ import '../config/lang.dart';
 import '../utils/app_utils.dart';
 import 'settings.dart';
 import 'tools.dart';
+import 'widgets/msg_template.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -217,37 +218,11 @@ class _HomePageState extends State<HomePage> {
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                       const SizedBox(height: 4),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          spacing: 8,
-                          children: [
-                            ActionChip(
-                              avatar: const Icon(Icons.add, size: 18),
-                              label: Text(t('custom')),
-                              onPressed: editSamples,
-                            ),
-                            for (final sample in samples)
-                              Tooltip(
-                                message: t('holdDelete'),
-                                child: GestureDetector(
-                                  onLongPress: () => editSamples(sample),
-                                  child: ActionChip(
-                                    label: Text(
-                                      sample,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    onPressed: () => message.text = sample,
-                                  ),
-                                ),
-                              ),
-                            for (var i = 1; i <= 5; i++)
-                              ActionChip(
-                                label: Text(t('s$i')),
-                                onPressed: () => message.text = t('s$i'),
-                              ),
-                          ],
-                        ),
+                      MessageTemplateList(
+                        samples: samples,
+                        onAdd: editSamples,
+                        onSelect: (value) => message.text = value,
+                        onLongPress: editSamples,
                       ),
                       SizedBox(height: gap),
                       FilledButton.icon(

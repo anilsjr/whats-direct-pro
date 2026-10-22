@@ -24,6 +24,7 @@ class ToolScreen extends StatelessWidget {
         isDark: theme.value == ThemeMode.dark,
         onLanguage: () => chooseLanguage(context),
         onTheme: () => chooseTheme(context, theme.value != ThemeMode.dark),
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         top: false,

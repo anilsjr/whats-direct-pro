@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 import '../config/lang.dart';
@@ -43,9 +44,18 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> rateUs() async {
     try {
+      final review = InAppReview.instance;
+      if (await review.isAvailable()) {
+        await review.requestReview();
+        return;
+      }
+    } catch (_) {
+      // Fall back to the store listing when the native review flow fails.
+    }
+    try {
       if (await launchUrl(
         Uri.parse(
-          'https://play.google.com/store/apps/details?id=com.example.whatsapp_direct_pro',
+          'https://play.google.com/store/apps/details?id=com.messagedirect.whatsappdirectmessageapp',
         ),
         mode: LaunchMode.externalApplication,
       )) {
